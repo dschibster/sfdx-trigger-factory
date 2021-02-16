@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Factory_Settings</fullName>
+    <columns>MasterLabel</columns>
+    <columns>DeveloperName</columns>
+    <columns>SObjectName__c</columns>
+    <columns>OrderOfExecution__c</columns>
+    <columns>ClassName__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Factory Settings</label>
+</ListView>
