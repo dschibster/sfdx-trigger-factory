@@ -94,8 +94,12 @@ public without sharing class TriggerFactory {
 		
 		List<ITrigger> handlers = new List<ITrigger>();
 
-		for(String className : TriggerMapping.getInstance().get(objType.getDescribe().getName().toUpperCase())){
-			handlers.add((ITrigger) Type.forName(className).newInstance());
+		String objectName = objType.getDescribe().getName().toUpperCase();
+
+		if(TriggerMapping.getInstance().containsKey(objectName)){
+			for(String className : TriggerMapping.getInstance().get(objectName)){
+				handlers.add((ITrigger) Type.forName(className).newInstance());
+			}
 		}
 
 		return handlers;
