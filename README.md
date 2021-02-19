@@ -13,9 +13,13 @@
 The classes provided by the Framework do not need to be changed in any way, as they work on their own and only serve to offer you a template for your own Trigger Handlers.
 
 `ITrigger` offers methods to be executed by the `TriggerFactory`
+
 `TriggerFactory` fetches the Trigger Handlers to execute and executes them.
+
 `TriggerMapping` fetches your Trigger Factory Settings and hands them over to the `Trigger Factory`
+
 `TriggerSettings` make checks on recursion and disabling of your Triggers.
+
 `TriggerHandlerExtension` is a virtual class for your own Trigger Handlers to extend. It already implements `ITrigger` so you only have to implement methods that are of interest to you. It additionally gives you access to recursion checks, disabling of triggers and more.
 
 
