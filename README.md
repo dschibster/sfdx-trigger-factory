@@ -23,6 +23,8 @@ In order to work with this Trigger Framework, create a single Trigger on an SObj
 In order to keep the Trigger Factory Dynamic, we are not checking for explicit SObject types in the factory, but are instead referencing a **Custom Metadata Type**. Go into Setup to create a `Trigger Factory Setting` with your SObject and the Trigger Handler you want to execute. Optionally, you can use an Order of Execution in case you want to create more than one Trigger Handler on one Object.
 
     Trigger Factory Setting:
+      Label: Choose freely, such as Account.AccountHandler
+      Name: Choose freely, such as Account_AccountHandler
       SObject Name: Account
       Class Name: AccountHandler
 
