@@ -114,7 +114,10 @@ public class OpportunityHandler extends TriggerHandlerExtension{
   }
 
   public override void afterInsert(SObject newSO){
-    //I also want to create an initial Task for each Opportunity
+      //I also want to create an initial Task for each Opportunity
+      Opportunity opp = (Opportunity) newSO;
+
+      createKickOffTask(opp);
   }
 
   public override void andFinally(){
@@ -134,7 +137,7 @@ public class OpportunityHandler extends TriggerHandlerExtension{
       opp.Name = mapAdditionalData.get(opp.Id).Account.Name + ' '+opp.Name;
   }
 
-  public void createTask(Opportunity opp){
+  public void createKickOffTask(Opportunity opp){
     lstInsert.add(new Task(Subject = 'Organize Kick-Off Meeting', WhatId = opp.Id, OwnerId = opp.OwnerId, ActivityDate = Date.today().addDays(1), Status = 'Open'));
   }
 }
