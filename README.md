@@ -75,13 +75,13 @@ Absolutely **DO NOT** use DML or SOQL in these methods!
 
 `beforeUpdate(SObject newSO, SObject oldSO)` processes a single record in your BEFORE_UPDATE TriggerOperation and is called for each of your records. It contains the old state of your record (`oldSO`) and the new one (`newSO`). You can therefore make comparisons on field changes etc.
 
-`beforeDelete(SObject oldSO)` processes a single record in your BEFORE_DELETRE TriggerOperation and is called for each of your records. It contains the old state of your record (`oldSO`), making you able to validate if the record should even be deleted.
+`beforeDelete(SObject oldSO)` processes a single record in your BEFORE_DELETE TriggerOperation and is called for each of your records. It contains the old state of your record (`oldSO`), making you able to validate if the record should even be deleted.
 
 `afterInsert(SObject newSO)` processes a single record (`newSO`) in your AFTER_INSERT TriggerOperation and is called for each of your records. 
 
 `afterUpdate(SObject newSO, SObject oldSO)` processes a single record in your AFTER_UPDATE TriggerOperation and is called for each of your records. It contains the old state of your record (`oldSO`) and the new one (`newSO`). You can therefore make comparisons on field changes etc.
 
-`afterDelete(SObject oldSO)` processes a single record in your AFTER_DELETRE TriggerOperation and is called for each of your records. It contains the old state of your record (`oldSO`). That way, you can still reference the Id of the deleted record in order to, for example, delete related objects.
+`afterDelete(SObject oldSO)` processes a single record in your AFTER_DELETE TriggerOperation and is called for each of your records. It contains the old state of your record (`oldSO`). That way, you can still reference the Id of the deleted record in order to, for example, delete related objects.
 
 #### Final Processing
 
