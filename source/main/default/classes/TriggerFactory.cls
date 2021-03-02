@@ -1,33 +1,30 @@
-/****************************************************************************************************
- * Used to instantiate and execute Trigger Handlers associated with sObjects.
- *****************************************************************************************************/
+
 public without sharing class TriggerFactory {
 
 	/**
-	 * Public static method to create and execute a trigger handler
-	 *
-	 * Arguments:	Schema.SObjectType objType - Object type to process (SObject.SObjectType)
-	 *
-	 * Throws a TriggerException if no handler has been coded.
+	 * @description Retrieves Handlers from Trigger Factory Setting and executes them by Order of Execution
+	 * @author mindsquare AG
+	 * @param  objType The Object Type of the Trigger you are calling.
+	 * @throws TriggerException when there is no Trigger Factory Setting or no class found.
 	 */
+	
 	public static void executeTriggerHandlers(Schema.SObjectType objType) {
-		// Get a handler appropriate to the object being processed
 		List<ITrigger> handlers = getHandlers(objType);
 		
 		if(handlers.size() == 0){
 			throw new TriggerException('No Trigger Handler registered for Object Type: ' + objType);
 		}
-		// Execute the handlers to fulfil the trigger
+		
 		for(ITrigger handler : handlers){
 			execute(handler);
 		}
 	}
 	
 	/**
-	 * private static method to control the execution of the handler
-	 *
-	 * Arguments:	ITrigger handler - A Trigger Handler to execute
-	 */	
+	 * @description Takes the Trigger execution methods from the retrieved Handlers and executes them. Starts with bulkBefore / bulkAfter and then goes into single-record methods
+	 * @author mindsquare AG
+	 * @param  handler The implementation of the Trigger Handler.
+	 */
 	private static void execute(ITrigger handler) {
 		if(!handler.isDisabled()){
 			// Before Trigger
@@ -83,12 +80,10 @@ public without sharing class TriggerFactory {
 	}
 	
 	/**
-	 * private static method to get the appropriate handler for the object type.
-	 * Modify this method to add any additional handlers.
-	 *
-	 * Arguments:	Schema.SObjectType objType - Object type tolocate (SObject.SObjectType)
-	 *
-	 * Returns:		ITrigger - A trigger handler if one exists or null.
+	 * @description retrieves a List of all Trigger Handlers that need to be executed for a given SObject Type. Returns an empty list if no Trigger Handler is registered.
+	 * @author mindsquare AG
+	 * @param  objType The SObject Type of the calling Trigger
+	 * @return A list of all Trigger Handlers of the currently calling Trigger's SObject Type. 
 	 */
 	private static List<ITrigger> getHandlers(Schema.SObjectType objType) {
 		
@@ -105,10 +100,6 @@ public without sharing class TriggerFactory {
 		return handlers;
 	}
 	
-	/**
-	 * Class TriggerException
-	 *
-	 * Used to instantiate custom Trigger Handler Exceptions.
-	 */
+
 	public class TriggerException extends Exception {}
 }
