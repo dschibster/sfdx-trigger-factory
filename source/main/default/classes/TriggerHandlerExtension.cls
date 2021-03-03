@@ -31,7 +31,6 @@ public virtual without sharing class TriggerHandlerExtension implements ITrigger
 	 * These list can be used freely in any Trigger Handler and help 
 	 * bundle the insertion or update of multiple different objects.
 	 */
-    
     public List<sObject> lstInsert;
 	public List<sObject> lstUpsert;
 	public List<sObject> lstUpdate;

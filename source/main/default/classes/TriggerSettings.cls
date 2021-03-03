@@ -11,6 +11,11 @@ public without sharing class TriggerSettings {
 
     }
 
+    /**
+     * @description Singleton Design Pattern method for TriggerSettings. For each control flow, this class only needs to be instantiated once. AFter that we are working with the same instance.
+     * @author mindsquare AG
+     * @return The currently instantiated instance of TriggerSettings
+     */
     public static TriggerSettings getInstance(){
         if (instance == null){
             instance = new TriggerSettings();
@@ -19,6 +24,11 @@ public without sharing class TriggerSettings {
         return instance;
     }
 
+
+    /**
+     * @description Loads all different possibilities of the currently running Trigger Handler to be disabled with Custom Metadata
+     * @author mindsquare AG
+     */
     public void load(){
         this.profileMapById = new Map<Id, Profile>([SELECT Id, Name FROM Profile]);
         this.disabledTriggerMapBySObjectType = new Map<String, Set<String>>();
@@ -37,6 +47,12 @@ public without sharing class TriggerSettings {
         }
     }
 
+    /**
+     * @description Checks if all Triggers of a certain SObject are disabled.
+     * @author mindsquare AG
+     * @param sobjType the SObject Type you want to check against (normally run directly in the Trigger Handler constructor)
+     * @return          The result is true if there is any indication that the SObject is disabled and false otherwise
+     */
     public Boolean isDisabledBySObjectType(SObjectType sobjType){
         String sobjectName = sobjType.getDescribe().getName().toUpperCase();
 
@@ -51,6 +67,12 @@ public without sharing class TriggerSettings {
         );
     }
 
+    /**
+     * @description Checks if the execution of a certain class is disabled.
+     * @author mindsquare AG
+     * @param className The class name of the Trigger Handler currently running
+     * @return          The result is true if there is any indication that the class is disabled and false otherwise
+     */
     public Boolean isDisabledByClassName(String className){
         className = className.toUpperCase();
 
@@ -65,6 +87,13 @@ public without sharing class TriggerSettings {
             );
     }
 
+    /**
+     * @description Puts the corresponsing fields of the Trigger Settings Custom Metadata into a Map for Profiles/Users or in a Set for things generally disabled
+     * @author mindsquare AG
+     * @param  disableMap The map that contains the correct type of disabling (object or class)
+     * @param  setting    The Trigger Setting containing the relevant data.
+     * @param  fieldName  The field name of the Trigger Setting that contains the correct data (object name or class name)
+     */
     @TestVisible 
     private void addStringsToMap(Map<String, Set<String>> disableMap, TriggerSetting__mdt setting, String fieldName){
         String objectOrClass = (String) setting.get(fieldName);
