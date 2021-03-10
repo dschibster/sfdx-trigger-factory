@@ -131,7 +131,7 @@ public class OpportunityHandler extends TriggerHandlerExtension{
 
   public override void andFinally(){
       //If you have added any work to your Unit of Work, you are now able to commit it.
-      if(!unitOfWork.hasWork()){
+      if(unitOfWork.hasWork()){
           unitOfWork.commitWork();
       }
   }
