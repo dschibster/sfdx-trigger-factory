@@ -19,12 +19,9 @@ private class TriggerHandlerExtensionTest {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
 			handlerExtension.isDisabled = handlerExtension.isDisabled();
-	        // check if DML Lists are initialized
-	        System.assert( handlerExtension.lstInsert != null , 'lstInsert is NULL' );
-	        System.assert( handlerExtension.lstUpsert != null , 'lstUpsert is NULL' );
-	        System.assert( handlerExtension.lstUpdate != null , 'lstUpdate is NULL' );
-	        System.assert( handlerExtension.lstDelete != null , 'lstDelete is NULL' );
-	        
+	        // check if Unit of Work was initialized
+	        System.assert( handlerExtension.unitOfWork != null , 'unitOfWork is NULL' );
+
 	        // check if Trigger is disabled
 	        System.assert(handlerExtension.isDisabled , 'Trigger is enabled' );    
     	}  
@@ -48,11 +45,8 @@ private class TriggerHandlerExtensionTest {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
 			handlerExtension.isDisabled = handlerExtension.isDisabled();
-	        // check if DML Lists are initialized
-	        System.assert( handlerExtension.lstInsert != null , 'lstInsert is NULL' );
-	        System.assert( handlerExtension.lstUpsert != null , 'lstUpsert is NULL' );
-	        System.assert( handlerExtension.lstUpdate != null , 'lstUpdate is NULL' );
-	        System.assert( handlerExtension.lstDelete != null , 'lstDelete is NULL' );
+	         // check if Unit of Work was initialized
+			 System.assert( handlerExtension.unitOfWork != null , 'unitOfWork is NULL' );
 	        
 	        // check if Trigger is disabled
 	        System.assert(handlerExtension.isDisabled , 'Trigger is enabled' );    
@@ -79,11 +73,8 @@ private class TriggerHandlerExtensionTest {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
 			handlerExtension.isDisabled = handlerExtension.isDisabled();
-	        // check if DML Lists are initialized
-	        System.assert( handlerExtension.lstInsert != null , 'lstInsert is NULL' );
-	        System.assert( handlerExtension.lstUpsert != null , 'lstUpsert is NULL' );
-	        System.assert( handlerExtension.lstUpdate != null , 'lstUpdate is NULL' );
-	        System.assert( handlerExtension.lstDelete != null , 'lstDelete is NULL' );
+	         // check if Unit of Work was initialized
+			 System.assert( handlerExtension.unitOfWork != null , 'unitOfWork is NULL' );
 	        
 	        // check if Trigger is disabled
 	        System.assert(handlerExtension.isDisabled , 'Trigger is enabled' );    
@@ -108,11 +99,8 @@ private class TriggerHandlerExtensionTest {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
 			handlerExtension.isDisabled = handlerExtension.isDisabled();
-	        // check if DML Lists are initialized
-	        System.assert( handlerExtension.lstInsert != null , 'lstInsert is NULL' );
-	        System.assert( handlerExtension.lstUpsert != null , 'lstUpsert is NULL' );
-	        System.assert( handlerExtension.lstUpdate != null , 'lstUpdate is NULL' );
-	        System.assert( handlerExtension.lstDelete != null , 'lstDelete is NULL' );
+			// check if Unit of Work was initialized
+			System.assert( handlerExtension.unitOfWork != null , 'unitOfWork is NULL' );
 	        
 	        // check if Trigger is disabled
 	        System.assert(handlerExtension.isDisabled , 'Trigger is enabled' );    
@@ -133,11 +121,8 @@ private class TriggerHandlerExtensionTest {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
 			handlerExtension.isDisabled = handlerExtension.isDisabled();
-	        // check if DML Lists are initialized
-	        System.assert( handlerExtension.lstInsert != null , 'lstInsert is NULL' );
-	        System.assert( handlerExtension.lstUpsert != null , 'lstUpsert is NULL' );
-	        System.assert( handlerExtension.lstUpdate != null , 'lstUpdate is NULL' );
-	        System.assert( handlerExtension.lstDelete != null , 'lstDelete is NULL' );
+			// check if Unit of Work was initialized
+			System.assert( handlerExtension.unitOfWork != null , 'unitOfWork is NULL' );
 	        
 	        // check if Trigger is disabled
 	        System.assert( !handlerExtension.isDisabled , 'Trigger is disabled' );    
@@ -162,11 +147,8 @@ private class TriggerHandlerExtensionTest {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
 			handlerExtension.isDisabled = handlerExtension.isDisabled();
-	        // check if DML Lists are initialized
-	        System.assert( handlerExtension.lstInsert != null , 'lstInsert is NULL' );
-	        System.assert( handlerExtension.lstUpsert != null , 'lstUpsert is NULL' );
-	        System.assert( handlerExtension.lstUpdate != null , 'lstUpdate is NULL' );
-	        System.assert( handlerExtension.lstDelete != null , 'lstDelete is NULL' );
+			// check if Unit of Work was initialized
+			System.assert( handlerExtension.unitOfWork != null , 'unitOfWork is NULL' );
 	        
 	        // check if Trigger is disabled
 	        System.assert( handlerExtension.isDisabled , 'Trigger is enabled' );    
@@ -189,11 +171,8 @@ private class TriggerHandlerExtensionTest {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
 			handlerExtension.isDisabled = handlerExtension.isDisabled();
-	        // check if DML Lists are initialized
-	        System.assert( handlerExtension.lstInsert != null , 'lstInsert is NULL' );
-	        System.assert( handlerExtension.lstUpsert != null , 'lstUpsert is NULL' );
-	        System.assert( handlerExtension.lstUpdate != null , 'lstUpdate is NULL' );
-	        System.assert( handlerExtension.lstDelete != null , 'lstDelete is NULL' );
+			// check if Unit of Work was initialized
+			System.assert( handlerExtension.unitOfWork != null , 'unitOfWork is NULL' );
 	        
 	        // check if Trigger is disabled
 	        System.assert( handlerExtension.isDisabled , 'Trigger is enabled' );    
@@ -218,11 +197,8 @@ private class TriggerHandlerExtensionTest {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
 			handlerExtension.isDisabled = handlerExtension.isDisabled();
-	        // check if DML Lists are initialized
-	        System.assert( handlerExtension.lstInsert != null , 'lstInsert is NULL' );
-	        System.assert( handlerExtension.lstUpsert != null , 'lstUpsert is NULL' );
-	        System.assert( handlerExtension.lstUpdate != null , 'lstUpdate is NULL' );
-	        System.assert( handlerExtension.lstDelete != null , 'lstDelete is NULL' );
+			// check if Unit of Work was initialized
+			System.assert( handlerExtension.unitOfWork != null , 'unitOfWork is NULL' );
 	        
 	        // check if Trigger is disabled
 	        System.assert( !handlerExtension.isDisabled , 'Trigger is disabled' );    
@@ -246,11 +222,8 @@ private class TriggerHandlerExtensionTest {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
 			handlerExtension.isDisabled = handlerExtension.isDisabled();
-	        // check if DML Lists are initialized
-	        System.assert( handlerExtension.lstInsert != null , 'lstInsert is NULL' );
-	        System.assert( handlerExtension.lstUpsert != null , 'lstUpsert is NULL' );
-	        System.assert( handlerExtension.lstUpdate != null , 'lstUpdate is NULL' );
-	        System.assert( handlerExtension.lstDelete != null , 'lstDelete is NULL' );
+			// check if Unit of Work was initialized
+			System.assert( handlerExtension.unitOfWork != null , 'unitOfWork is NULL' );
 	        
 	        // check if Trigger is disabled
 	        System.assert(handlerExtension.isDisabled , 'Trigger is enabled' );    
@@ -276,11 +249,8 @@ private class TriggerHandlerExtensionTest {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
 			handlerExtension.isDisabled = handlerExtension.isDisabled();
-	        // check if DML Lists are initialized
-	        System.assert( handlerExtension.lstInsert != null , 'lstInsert is NULL' );
-	        System.assert( handlerExtension.lstUpsert != null , 'lstUpsert is NULL' );
-	        System.assert( handlerExtension.lstUpdate != null , 'lstUpdate is NULL' );
-	        System.assert( handlerExtension.lstDelete != null , 'lstDelete is NULL' );
+			// check if Unit of Work was initialized
+			System.assert( handlerExtension.unitOfWork != null , 'unitOfWork is NULL' );
 	        
 	        // check if Trigger is disabled
 	        System.assert( !handlerExtension.isDisabled , 'Trigger is disabled' );    
@@ -305,11 +275,8 @@ private class TriggerHandlerExtensionTest {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
 			handlerExtension.isDisabled = handlerExtension.isDisabled();
-	        // check if DML Lists are initialized
-	        System.assert( handlerExtension.lstInsert != null , 'lstInsert is NULL' );
-	        System.assert( handlerExtension.lstUpsert != null , 'lstUpsert is NULL' );
-	        System.assert( handlerExtension.lstUpdate != null , 'lstUpdate is NULL' );
-	        System.assert( handlerExtension.lstDelete != null , 'lstDelete is NULL' );
+			// check if Unit of Work was initialized
+			System.assert( handlerExtension.unitOfWork != null , 'unitOfWork is NULL' );
 	        
 	        // check if Trigger is disabled
 	        System.assert( handlerExtension.isDisabled , 'Trigger is enabled' );    
@@ -334,11 +301,8 @@ private class TriggerHandlerExtensionTest {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
 			handlerExtension.isDisabled = handlerExtension.isDisabled();
-	        // check if DML Lists are initialized
-	        System.assert( handlerExtension.lstInsert != null , 'lstInsert is NULL' );
-	        System.assert( handlerExtension.lstUpsert != null , 'lstUpsert is NULL' );
-	        System.assert( handlerExtension.lstUpdate != null , 'lstUpdate is NULL' );
-	        System.assert( handlerExtension.lstDelete != null , 'lstDelete is NULL' );
+			// check if Unit of Work was initialized
+			System.assert( handlerExtension.unitOfWork != null , 'unitOfWork is NULL' );
 	        
 	        // check if Trigger is disabled
 	        System.assert( handlerExtension.isDisabled , 'Trigger is enabled' );    
@@ -418,6 +382,11 @@ private class TriggerHandlerExtensionTest {
 	        // check if recursion exception have been thrown
 	        System.assert( !hasRecursionException , 'Recursion exception has been thrown' );
     	}    	
+	}
+
+	@isTest static void testSetUnitOfWork(){
+		TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
+		handlerExtension.setUnitOfWorkSObjectOrder(new List<SObjectType>{Account.SObjectType});
 	}
 
 	

@@ -5,6 +5,9 @@
 
 ## Mindsquare Trigger Framework 2.0 - Now with dynamic Handler Calls ##
 
+Requires the <a href="https://github.com/apex-enterprise-patterns/fflib-apex-common">fflib Apex Common</a> Library to be deployed on your Org.
+Utilizes the Unit of Work Pattern to fulfill separation concerns between Trigger execution logic and Database access.
+
 ### Overview ### 
 
 <img src="https://github.com/dschibster/ms-triggerframework/blob/master/resources/framework.png">
@@ -21,6 +24,8 @@ The classes provided by the Framework do not need to be changed in any way, as t
 `TriggerSettings` make checks on recursion and disabling of your Triggers.
 
 `TriggerHandlerExtension` is a virtual class for your own Trigger Handlers to extend. It already implements `ITrigger` so you only have to implement methods that are of interest to you. It additionally gives you access to recursion checks, disabling of triggers and more.
+
+`TriggerUnitOfWork` bundles all the DML that will be done inside your Trigger into one package, separating your Trigger from actual database operations.
 
 
 
@@ -98,7 +103,7 @@ An example usage of the Trigger Framework (excluding the Trigger itself) can loo
 ```java
 public class OpportunityHandler extends TriggerHandlerExtension{
 
-  Map<Id, Opportunity> mapAdditionalData = new Map<Id, Opportunity>();
+  Map<Id, Account> mapAdditionalData = new Map<Id, Account>();
 
   public AccountHandler(){
     super();
@@ -107,7 +112,7 @@ public class OpportunityHandler extends TriggerHandlerExtension{
   public override void bulkBefore(){
       //I want to add the Account Name to the Opportunity Name. Therefore I need to get the Account Name from somwewhere.
       if(Trigger.isInsert){
-        mapAdditionalData = new Map<Id, Opportunity>([SELECT Id, Account.Name, Account.Type FROM Opportunity  WHERE Id IN :Trigger.new]);
+        collectAccountData();
       }
   }
 
@@ -127,8 +132,8 @@ public class OpportunityHandler extends TriggerHandlerExtension{
   public override void andFinally(){
       //Insert Records that were added to the lstInsert in the mean time.
       //This will be empty in the BEFORE context.
-      if(!lstInsert.isEmpty()){
-          insert lstInsert;
+      if(!unitOfWork.hasWork()){
+          unitOfWork.commitWork();
       }
   }
 
@@ -136,13 +141,20 @@ public class OpportunityHandler extends TriggerHandlerExtension{
   /**
   You are free to use Helper Classes instead. Here we are using class methods.
   */
+  public void collectAccountData(){
+    Set<Id> accountIds = new Set<Id>();
+    for(Opportunity opp : (List<Opportunity>) Trigger.new){
+      accountIds.add(opp.AccountId);
+    }
+    mapAdditionalData = new Map<Id, Account>([SELECT Id, Name FROM Account WHERE Id IN :accountIds]);
+  }
 
   public void addAccountName(Opportunity opp){
-      opp.Name = mapAdditionalData.get(opp.Id).Account.Name + ' '+opp.Name;
+      opp.Name = mapAdditionalData.get(opp.AccountId).Name + ' '+opp.Name;
   }
 
   public void createKickOffTask(Opportunity opp){
-    lstInsert.add(new Task(Subject = 'Organize Kick-Off Meeting', WhatId = opp.Id, OwnerId = opp.OwnerId, ActivityDate = Date.today().addDays(1), Status = 'Open'));
+    this.unitOfWork.registerNew(new Task(Subject = 'Organize Kick-Off Meeting', WhatId = opp.Id, OwnerId = opp.OwnerId, ActivityDate = Date.today().addDays(1), Status = 'Open'));
   }
 }
 ```

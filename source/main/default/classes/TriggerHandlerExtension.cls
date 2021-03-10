@@ -21,20 +21,15 @@ public virtual without sharing class TriggerHandlerExtension implements ITrigger
 			}
 		}
 				
-		lstInsert = new List<sObject>();
-		lstUpsert = new List<sObject>();    
-		lstUpdate = new List<sObject>(); 
-		lstDelete = new List<sObject>();
+		unitOfWork = new TriggerUnitOfWork();
 	}
 	
 	/**
-	 * These list can be used freely in any Trigger Handler and help 
-	 * bundle the insertion or update of multiple different objects.
+	 * Use this Unit of Work for the bundling of you DML inside the Trigger Framework.
+	 * Not compatible with the old way of handling records (lstInsert / lstUpser / lstUpdate / lstDelete)
 	 */
-    public List<sObject> lstInsert;
-	public List<sObject> lstUpsert;
-	public List<sObject> lstUpdate;
-	public List<sObject> lstDelete;
+    public TriggerUnitOfWork unitOfWork;
+
 
 	/**
 	 * @description Helps you call methods or collect data that you need before the processing of data in a "before" Context
@@ -108,9 +103,15 @@ public virtual without sharing class TriggerHandlerExtension implements ITrigger
 	 * @author mindsquare AG
 	 */
 	virtual public void andFinally(){}
-	
-    // Constructor
-    
+	  
+	/**
+	 * @description If you are deviating from the TriggerUnitOfWork's order of SObject Types, designate it with this method in your Handler's constructor
+	 * @author mindsquare A
+	 * @param  sobjectTypes The ordered List of SObject Types for your Handler
+	 */
+	public void setUnitOfWorkSObjectOrder(List<SObjectType> sobjectTypes){
+		this.unitOfWork = new TriggerUnitOfWork(sobjectTypes);
+	}
 	
 
     
