@@ -130,8 +130,7 @@ public class OpportunityHandler extends TriggerHandlerExtension{
   }
 
   public override void andFinally(){
-      //Insert Records that were added to the lstInsert in the mean time.
-      //This will be empty in the BEFORE context.
+      //If you have added any work to your Unit of Work, you are now able to commit it.
       if(!unitOfWork.hasWork()){
           unitOfWork.commitWork();
       }
