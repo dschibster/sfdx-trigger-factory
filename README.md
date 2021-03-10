@@ -6,7 +6,7 @@
 ## Mindsquare Trigger Framework 2.0 - Now with dynamic Handler Calls ##
 
 Requires the <a href="https://github.com/apex-enterprise-patterns/fflib-apex-common">fflib Apex Common</a> Library to be deployed on your Org.
-Utilizes the Unit of Work Pattern to fulfill separation concerns between Trigger execution logic and Database access.
+Utilizes the Unit of Work Pattern to fulfill separation of concerns between Trigger execution logic and Database access.
 
 ### Overview ### 
 
