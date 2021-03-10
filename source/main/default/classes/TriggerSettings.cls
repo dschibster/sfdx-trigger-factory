@@ -54,17 +54,21 @@ public without sharing class TriggerSettings {
      * @return          The result is true if there is any indication that the SObject is disabled and false otherwise
      */
     public Boolean isDisabledBySObjectType(SObjectType sobjType){
-        String sobjectName = sobjType.getDescribe().getName().toUpperCase();
+        if(sobjType != null){
+            String sobjectName = sobjType.getDescribe().getName().toUpperCase();
 
-        return this.disabledClassesAndObjects.contains(sobjectName) 
-        || (this.disabledTriggerMapBySObjectType.containsKey(sobjectName) &&
-            (
-                this.disabledTriggerMapBySObjectType.get(sobjectName).contains(UserInfo.getUserId().toUpperCase())
-                || this.disabledTriggerMapBySObjectType.get(sobjectName).contains(UserInfo.getUserName().toUpperCase())
-                || this.disabledTriggerMapBySObjectType.get(sobjectName).contains(UserInfo.getProfileId().toUpperCase())
-                || this.disabledTriggerMapBySObjectType.get(sobjectName).contains(this.profileMapById.get(UserInfo.getProfileId()).Name.toUpperCase())
-            )
-        );
+            return this.disabledClassesAndObjects.contains(sobjectName) 
+            || (this.disabledTriggerMapBySObjectType.containsKey(sobjectName) &&
+                (
+                    this.disabledTriggerMapBySObjectType.get(sobjectName).contains(UserInfo.getUserId().toUpperCase())
+                    || this.disabledTriggerMapBySObjectType.get(sobjectName).contains(UserInfo.getUserName().toUpperCase())
+                    || this.disabledTriggerMapBySObjectType.get(sobjectName).contains(UserInfo.getProfileId().toUpperCase())
+                    || this.disabledTriggerMapBySObjectType.get(sobjectName).contains(this.profileMapById.get(UserInfo.getProfileId()).Name.toUpperCase())
+                )
+            );
+        }else{
+            return false;
+        }
     }
 
     /**

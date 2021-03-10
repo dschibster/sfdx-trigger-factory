@@ -420,22 +420,7 @@ private class TriggerHandlerExtensionTest {
     	}    	
 	}
 
-	@isTest static void executeDummyTrigger(){
-		TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
-		handlerExtension.sObjType = Account.SObjectType;
-		handlerExtension.isDisabled = handlerExtension.isDisabled();
+	
 
-		TriggerMapping.getInstance().put('ACCOUNT',new List<String>{'TriggerHandlerExtension'});
 
-		//This Account needs to be adjusted for your local validations, if you so desire to use this Object. 
-		//Feel free to use any non-validated Object instead.
-		Account testAccount = new Account(Name = 'Test');
-		Test.startTest();
-
-		insert testAccount;
-		update testAccount;
-		delete testAccount;
-
-		Test.stopTest();
-	}
 }
