@@ -10,7 +10,7 @@ public with sharing class TriggerHubTest {
             TriggerMapping.getInstance().remove('LEAD');
         }
 		try{
-			TriggerFactory.executeTriggerHandlers(Lead.SObjectType);
+			TriggerHub.executeTriggerHandlers(Lead.SObjectType);
 		}catch(Exception e){
 			ex = e;
 		}
@@ -22,7 +22,7 @@ public with sharing class TriggerHubTest {
 		
 		//Dependency Inject into the Trigger Factory in order to have our methods run even though they are not called via Trigger
 		TriggerMapping.getInstance().put('LEAD', new List<String>{'TriggerHandlerExtension'});
-        List<ITrigger> triggerHandlers = TriggerFactory.getHandlers(Lead.SObjectType);
+        List<ITrigger> triggerHandlers = TriggerHub.getHandlers(Lead.SObjectType);
         ITrigger handler = triggerHandlers[0];
 
         //to inject into the triggerNew/triggerOld parameters.
@@ -31,12 +31,12 @@ public with sharing class TriggerHubTest {
 		insert leadList;
         Map<Id, Lead> leadMap = new Map<Id, Lead>(leadList);
 
-        TriggerFactory.execute(handler, 'BEFORE_INSERT', leadList, null);
-        TriggerFactory.execute(handler, 'BEFORE_DELETE', null, leadMap);
-        TriggerFactory.execute(handler, 'BEFORE_UPDATE', leadList, leadMap);
-        TriggerFactory.execute(handler, 'AFTER_INSERT', leadList, null);
-        TriggerFactory.execute(handler, 'AFTER_DELETE', null, leadMap);
-        TriggerFactory.execute(handler, 'AFTER_UPDATE', leadList, leadMap);
+        TriggerHub.execute(handler, 'BEFORE_INSERT', leadList, null);
+        TriggerHub.execute(handler, 'BEFORE_DELETE', null, leadMap);
+        TriggerHub.execute(handler, 'BEFORE_UPDATE', leadList, leadMap);
+        TriggerHub.execute(handler, 'AFTER_INSERT', leadList, null);
+        TriggerHub.execute(handler, 'AFTER_DELETE', null, leadMap);
+        TriggerHub.execute(handler, 'AFTER_UPDATE', leadList, leadMap);
         
 		
 	}
