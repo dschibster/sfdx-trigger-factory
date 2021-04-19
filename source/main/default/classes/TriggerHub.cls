@@ -4,7 +4,6 @@
 
 
 public without sharing class TriggerHub {
-
 	/**
 	 * @description Retrieves Handlers from Trigger Factory Setting and executes them by Order of Execution
 	 * @author mindsquare AG
@@ -20,7 +19,7 @@ public without sharing class TriggerHub {
 		}
 		
 		for(ITrigger handler : handlers){
-			execute(handler);
+			execute(handler, Trigger.operationType?.name(), Trigger.new, Trigger.oldMap);
 		}
 	}
 	
@@ -29,51 +28,55 @@ public without sharing class TriggerHub {
 	 * @author mindsquare AG
 	 * @param  handler The implementation of the Trigger Handler.
 	 */
-	private static void execute(ITrigger handler) {
+	@TestVisible private static void execute(ITrigger handler, String triggerOperation, List<SObject> triggerNew, Map<Id, SObject> triggerOldMap) {
 		if(!handler.isDisabled()){
+			//Split the operationtype (for example AFTER_INSERT) into its two pieces to determine what we need.
+			List<String> operations = triggerOperation.split('_');
+			Boolean isBefore = operations[0] == 'BEFORE';
+			String dmlOperation = operations[1];
+			
+
 			// Before Trigger
-			if (Trigger.isBefore) {
+			if (isBefore) {
 				// Call the bulk before to handle any caching of data and enable bulkification
 				handler.bulkBefore();
 				
-				// Iterate through the records to be deleted passing them to the handler.
-				if (Trigger.isDelete) {
-					for (SObject obj : Trigger.old) {
-						handler.beforeDelete(obj);
+				switch on dmlOperation{
+					when 'DELETE'{
+						for (SObject obj : triggerOldMap.values()) {
+							handler.beforeDelete(obj);
+						}
 					}
-				}
-				// Iterate through the records to be inserted passing them to the handler.
-				else if (Trigger.isInsert) {
-					for (SObject obj : Trigger.new) {
-						handler.beforeInsert(obj);
+					when 'INSERT'{
+						for (SObject obj : triggerNew) {
+							handler.beforeInsert(obj);
+						}
 					}
-				}
-				// Iterate through the records to be updated passing them to the handler.
-				else if (Trigger.isUpdate) {
-					for (SObject obj : Trigger.old) {
-						handler.beforeUpdate(obj, Trigger.newMap.get(obj.Id));
+					when 'UPDATE'{
+						for (SObject obj : triggerNew) {
+							handler.beforeUpdate(triggerOldMap.get(obj.Id), obj);
+						}
 					}
 				}
 			} else {
 				// Call the bulk after to handle any caching of data and enable bulkification
 				handler.bulkAfter();
 				
-				// Iterate through the records deleted passing them to the handler.
-				if (Trigger.isDelete) {
-					for (SObject obj : Trigger.old) {
-						handler.afterDelete(obj);
+				switch on dmlOperation{
+					when 'DELETE'{
+						for (SObject obj : triggerOldMap.values()) {
+							handler.afterDelete(obj);
+						}
 					}
-				}
-				// Iterate through the records inserted passing them to the handler.
-				else if (Trigger.isInsert) {
-					for (SObject obj : Trigger.new) {
-						handler.afterInsert(obj);
+					when 'INSERT'{
+						for (SObject obj : triggerNew) {
+							handler.afterInsert(obj);
+						}
 					}
-				}
-				// Iterate through the records updated passing them to the handler.
-				else if (Trigger.isUpdate) {
-					for (SObject obj : Trigger.old) {
-						handler.afterUpdate(obj, Trigger.newMap.get(obj.Id));
+					when 'UPDATE'{
+						for (SObject obj : triggerNew) {
+							handler.afterUpdate(triggerOldMap.get(obj.Id), obj);
+						}
 					}
 				}
 			}
@@ -89,7 +92,7 @@ public without sharing class TriggerHub {
 	 * @param  objType The SObject Type of the calling Trigger
 	 * @return A list of all Trigger Handlers of the currently calling Trigger's SObject Type. 
 	 */
-	private static List<ITrigger> getHandlers(Schema.SObjectType objType) {
+	@TestVisible private static List<ITrigger> getHandlers(Schema.SObjectType objType) {
 		
 		List<ITrigger> handlers = new List<ITrigger>();
 
