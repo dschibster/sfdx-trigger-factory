@@ -1,5 +1,9 @@
+/**
+ * *
+**/
 
-public without sharing class TriggerFactory {
+
+public without sharing class TriggerHub {
 
 	/**
 	 * @description Retrieves Handlers from Trigger Factory Setting and executes them by Order of Execution
