@@ -1,11 +1,18 @@
 {
-  "packageDirectories": [
-    {
-      "path": "source",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "source",
+            "default": true,
+            "package": "mstriggerframework",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT",
+            "branch": "master"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "50.0",
+    "packageAliases": {
+        "mstriggerframework": "0Ho09000000sY5nCAE"
     }
-  ],
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "50.0"
 }

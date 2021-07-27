@@ -4,7 +4,8 @@ private class TriggerHandlerExtensionTest {
 	private static Boolean isMultiCurrency = UserInfo.isMultiCurrencyOrganization();
 
 	@isTest static void triggerDisabledByObject_positive(){
-		Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+		Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
@@ -31,7 +32,8 @@ private class TriggerHandlerExtensionTest {
 	}
 
 	@isTest static void objectDisabledForProfile_positive_methodTest(){
-		Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+		Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
@@ -40,7 +42,7 @@ private class TriggerHandlerExtensionTest {
 		Database.SaveResult resultUserInsert = database.insert( objUser );
     	System.assert( resultUserInsert.isSuccess() , 'Testuser insert has failed');
 		
-		TriggerSetting__mdt setting = new TriggerSetting__mdt(SObjectName__c = 'Account', ProfileNamesIds__c = 'Standard User', IsDisabled__c = true);
+		TriggerSetting__mdt setting = new TriggerSetting__mdt(SObjectName__c = 'Account', ProfileNamesIds__c = objProfile.Id, IsDisabled__c = true);
 		TriggerSettings ts = TriggerSettings.getInstance();
 		TriggerSettings.getInstance().addStringsToMap(ts.disabledTriggerMapBySObjectType, setting, 'SObjectName__c');
 		
@@ -60,7 +62,8 @@ private class TriggerHandlerExtensionTest {
 	}
 
 	@isTest static void objectDisabledForUser_positive_methodTest(){
-		Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+		Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
@@ -91,7 +94,8 @@ private class TriggerHandlerExtensionTest {
 	}
 
 	@isTest static void objectDisabled_positive_methodTest(){
-		Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+		Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
@@ -120,7 +124,8 @@ private class TriggerHandlerExtensionTest {
 	}
 
 	@isTest static void triggerDisabledByObject_negative(){
-		Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+		Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
@@ -145,7 +150,8 @@ private class TriggerHandlerExtensionTest {
 	}
 
 	@isTest static void objectDisabledByUser_positive(){
-		Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+		Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
@@ -174,7 +180,8 @@ private class TriggerHandlerExtensionTest {
 	}
 
 	@isTest static void objectDisabledByApex_positive(){
-		Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+		Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
@@ -201,7 +208,8 @@ private class TriggerHandlerExtensionTest {
 	}
 
 	@isTest static void objectDisabledByApex_negative(){
-		Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+		Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
@@ -230,7 +238,8 @@ private class TriggerHandlerExtensionTest {
 	}
 
 	@isTest static void classDisabledByApex_positive(){
-		Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+		Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
@@ -241,7 +250,6 @@ private class TriggerHandlerExtensionTest {
 		
 		TriggerHandlerExtension.disableClass('TriggerHandlerExtension');
 
-					
 		System.runAs(objUser) {
 			TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
 			handlerExtension.sObjType = Account.SObjectType;
@@ -258,7 +266,8 @@ private class TriggerHandlerExtensionTest {
 	}
 
 	@isTest static void classDisabledByApex_negative(){
-		Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+		Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
@@ -288,7 +297,8 @@ private class TriggerHandlerExtensionTest {
 	}
 
 	@isTest static void objectDisabledByProfile_positive(){
-		Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+		Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
@@ -298,7 +308,7 @@ private class TriggerHandlerExtensionTest {
 		System.assert( resultUserInsert.isSuccess() , 'Testuser insert has failed');
 		
 		TriggerSettings.getInstance().disabledTriggerMapBySObjectType.put('ACCOUNT', new Set<String>());
-		TriggerSettings.getInstance().disabledTriggerMapBySObjectType.get('ACCOUNT').add('STANDARD USER');
+		TriggerSettings.getInstance().disabledTriggerMapBySObjectType.get('ACCOUNT').add(objProfile.Name.toUpperCase());
 
 					
 		System.runAs(objUser) {
@@ -317,7 +327,8 @@ private class TriggerHandlerExtensionTest {
 	}
 
 	@isTest static void classDisabledByProfile_positive(){
-		Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+		Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
@@ -327,7 +338,7 @@ private class TriggerHandlerExtensionTest {
 		System.assert( resultUserInsert.isSuccess() , 'Testuser insert has failed');
 		
 		TriggerSettings.getInstance().disabledTriggerMapByClassName.put('TRIGGERHANDLEREXTENSION', new Set<String>());
-		TriggerSettings.getInstance().disabledTriggerMapByClassName.get('TRIGGERHANDLEREXTENSION').add('STANDARD USER');
+		TriggerSettings.getInstance().disabledTriggerMapByClassName.get('TRIGGERHANDLEREXTENSION').add(objProfile.Name.toUpperCase());
 
 					
 		System.runAs(objUser) {
@@ -347,7 +358,8 @@ private class TriggerHandlerExtensionTest {
 
 	@isTest static void triggerRecursionTest() {
     	
-    	Profile objProfile = [SELECT Id, Name FROM profile WHERE name = 'Standard User'];
+    	Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
+
         User objUser = new User(alias = 'alias', email='mail@mail.de', emailencodingkey='ISO-8859-1', lastname='Tester', languagelocalekey='en_US', localesidkey='en_US', profileid = objProfile.Id, username='username@user.de', TimeZoneSidKey='Europe/Berlin');
 		if(isMultiCurrency){
 			objUser.put('CurrencyIsoCode','EUR');
