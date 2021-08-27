@@ -11,7 +11,7 @@
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "50.0",
+    "sourceApiVersion": "52.0",
     "packageAliases": {
         "sfdx-trigger-factory": "05i09000000k9xJAAQ"
     }
