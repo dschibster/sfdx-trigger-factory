@@ -13,6 +13,7 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "52.0",
     "packageAliases": {
-        "sfdx-trigger-factory": "05i09000000k9xJAAQ"
+        "sfdx-trigger-factory": "0Ho09000000sY6qCAE",
+        "sfdx-trigger-factory@1.0.0.0": "04t09000000ibshAAA"
     }
 }
