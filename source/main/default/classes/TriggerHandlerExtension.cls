@@ -94,13 +94,22 @@ public virtual without sharing class TriggerHandlerExtension implements ITrigger
 	virtual public void afterUpdate(SOBject oldSObj, SOBject newSObj){}
 
 	/**
-	 * @description Called for every single record in an After Update Conetxt.
+	 * @description Called for every single record in an After Delete Conetxt.
 	 * Do not use DML or SOQL in here as this will cause failures with bulk data processing.
 	 * Typecast the parameters into the proper SObject type for proper dot notation.
 	 * @author mindsquare AG
-	 * @param  oldSObj oldSObj description
+	 * @param  oldSObj Single Deleted record
 	 */
 	virtual public void afterDelete(SOBject oldSObj){}
+
+	/**
+	 * @description Called for every single record in an After Undelete Conetxt.
+	 * Do not use DML or SOQL in here as this will cause failures with bulk data processing.
+	 * Typecast the parameters into the proper SObject type for proper dot notation.
+	 * @author mindsquare AG
+	 * @param  oldSObj Single Undeleted record
+	 */
+	virtual public void afterUndelete(SOBject oldSObj){}
 
 	/**
 	 * @description Used for processing of data collected in record processing

@@ -57,6 +57,7 @@ public without sharing class TriggerFactory {
 			} else {
 				// Call the bulk after to handle any caching of data and enable bulkification
 				handler.bulkAfter();
+
 				
 				switch on dmlOperation{
 					when 'DELETE'{
@@ -72,6 +73,11 @@ public without sharing class TriggerFactory {
 					when 'UPDATE'{
 						for (SObject obj : triggerNew) {
 							handler.afterUpdate(triggerOldMap.get(obj.Id), obj);
+						}
+					}
+					when 'UNDELETE'{
+						for (SObject obj : triggerNew) {
+							handler.afterUndelete(obj);
 						}
 					}
 				}

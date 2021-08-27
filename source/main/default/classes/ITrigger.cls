@@ -84,7 +84,14 @@ public interface ITrigger {
 	 * This method is called iteratively for each record deleted during an AFTER
 	 * trigger.
 	 */
-	void afterDelete(SObject obj);
+	void afterDelete(SObject obj);/**
+	
+	* afterUndelete
+	*
+	* This method is called iteratively for each record recovered during an AFTER
+	* trigger.
+	*/
+   void afterUndelete(SObject obj);
 
 	/**
 	 * andFinally

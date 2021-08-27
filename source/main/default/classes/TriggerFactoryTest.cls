@@ -34,7 +34,7 @@ public with sharing class TriggerFactoryTest {
         TriggerFactory.execute(handler, 'AFTER_INSERT', leadList, null);
         TriggerFactory.execute(handler, 'AFTER_DELETE', null, leadMap);
         TriggerFactory.execute(handler, 'AFTER_UPDATE', leadList, leadMap);
-        
+        TriggerFactory.execute(handler, 'AFTER_UNDELETE', leadList, null);
 		
 	}
 }
