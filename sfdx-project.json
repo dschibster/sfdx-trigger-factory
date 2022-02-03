@@ -6,7 +6,13 @@
             "package": "sfdx-trigger-factory",
             "versionName": "ver 1.0",
             "versionNumber": "1.0.0.NEXT",
-            "branch": "master"
+            "branch": "master",
+            "unpackagedMetadata": {
+                "path": "unmanaged"
+            }
+        },
+        {
+            "path": "unmanaged"
         }
     ],
     "namespace": "",
