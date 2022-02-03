@@ -1,4 +1,4 @@
-public virtual without sharing class TriggerHandlerExtension implements ITrigger{
+public virtual without sharing class TriggerHandlerExtension{
     
     public Schema.sObjectType sObjType;    
     public Boolean isDisabled;
