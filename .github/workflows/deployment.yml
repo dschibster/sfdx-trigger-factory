@@ -1,0 +1,66 @@
+name: Code Coverage and Release
+
+on:
+    push:
+        branches:
+            - master
+        paths:
+            - "batch-orchestrator/**"
+    pull_request:
+        branches:
+            - master
+        paths:
+            - "batch-orchestrator/**"
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  ref: ${{ github.head_ref }}
+            - name: "Install Salesforce CLI"
+              run: |
+                  wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+                  mkdir ~/sfdx
+                  tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+                  echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+                  ~/sfdx/bin/sfdx version
+            - name: Populate auth file
+              run: 'echo "${{ secrets.SFDX_AUTH_URL }}" > ./SALESFORCE_AUTH_URL.txt'
+            - name: Authenticate Dev Hub
+              run: "sfdx force:auth:sfdxurl:store -f ./SALESFORCE_AUTH_URL.txt -a devhub -d"
+            - name: Populate auth file for test hub
+              run: 'echo "${{ secrets.TESTHUB_AUTH_URL }}" > ./SALESFORCE_AUTH_URL.txt'
+            - name: Authenticate Test Hub
+              run: "sfdx force:auth:sfdxurl:store -f ./SALESFORCE_AUTH_URL.txt -a testhub -d"
+            - name: Create Scratch Org
+              run: sfdx force:org:create --targetdevhubusername testhub --setdefaultusername --definitionfile config/project-scratch-def.json --setalias ciorg --durationdays 1
+            - name: Deploy source
+              run: sfdx force:source:push
+            - name: Run Apex tests
+              run: sfdx force:apex:test:run --codecoverage --resultformat human -d ./
+            - name: Delete Scratch Org
+              run: sfdx force:org:delete --noprompt
+            - name: Upload code coverage for Apex to Codecov.io
+              uses: codecov/codecov-action@v2
+              with:
+                  flags: Apex
+            - name: Increment Package Version in sfdx-project.json
+              if: github.actor == github.event.repository.owner.login && github.event_name == 'pull_request' && github.event.action == 'opened'
+              run: |
+                  chmod +x scripts/increment-package-version.sh
+                  ./scripts/increment-package-version.sh
+            - name: Create new Package version
+              if: github.event.action != 'closed' && github.event_name == 'pull_request' && github.actor == github.event.repository.owner.login
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  REPO_NAME: ${{ github.repository }}
+              run: |
+                  chmod +x scripts/create-new-package-verison.sh
+                  ./scripts/create-new-package-verison.sh
+            - name: Promote current latest Package version
+              if: github.ref == 'refs/heads/master' && github.actor == github.event.repository.owner.login
+              run: |
+                  chmod +x scripts/promote-latest-package-version.sh
+                  ./scripts/promote-latest-package-version.sh
