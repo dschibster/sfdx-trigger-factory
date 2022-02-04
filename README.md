@@ -1,3 +1,7 @@
+[![codecov](https://codecov.io/gh/dschibster/sfdx-trigger-factory/branch/master/graph/badge.svg?token=WPU1N1CNE8)](https://codecov.io/gh/dschibster/sfdx-trigger-factory)
+[![Code Coverage and Release](https://github.com/dschibster/sfdx-trigger-factory/actions/workflows/deployment.yml/badge.svg)](https://github.com/dschibster/sfdx-trigger-factory/actions/workflows/deployment.yml)
+
+# Installation
 <div>
 <span><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijX5AAI">
   <img alt="Deploy to Salesforce"

@@ -47,6 +47,7 @@ jobs:
               with:
                   token: ${{ secrets.CODECOV_TOKEN }}
                   flags: Apex
+                  files: ./test-result-codecoverage.json
             - name: Increment Package Version in sfdx-project.json
               if: github.actor == github.event.repository.owner.login && github.event_name == 'pull_request' && github.event.action == 'opened'
               run: |
