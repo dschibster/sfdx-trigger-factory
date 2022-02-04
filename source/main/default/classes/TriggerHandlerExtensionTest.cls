@@ -193,7 +193,7 @@ private class TriggerHandlerExtensionTest {
             System.assert(handlerExtension.lstUpdate != null, 'lstUpdate is NULL');
             System.assert(handlerExtension.lstDelete != null, 'lstDelete is NULL');
 
-            // check if Trigger is disabled
+            /* check if Trigger is disabled */
             System.assert(handlerExtension.isDisabled, 'Trigger is enabled');
         }
     }
