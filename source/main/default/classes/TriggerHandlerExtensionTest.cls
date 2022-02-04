@@ -3,6 +3,36 @@ private class TriggerHandlerExtensionTest {
     private static Boolean isMultiCurrency = UserInfo.isMultiCurrencyOrganization();
 
     @isTest
+    static void disabledInApex_Object_positive() {
+        TriggerHandlerExtension.disableObject(Account.SObjectType);
+        TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
+        handlerExtension.sObjType = Account.SObjectType;
+        handlerExtension.isDisabled = handlerExtension.isDisabled();
+
+        System.assert(handlerExtension.isDisabled, 'Object was not disabled');
+
+        TriggerHandlerExtension.enableObject(Account.SObjectType);
+        handlerExtension.isDisabled = handlerExtension.isDisabled();
+
+        System.assert(!handlerExtension.isDisabled, 'Object was not enabled after disabling');
+    }
+
+    @isTest
+    static void disabledInApex_Class_positive() {
+        TriggerHandlerExtension.disableClass('TriggerHandlerExtension');
+        TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
+        handlerExtension.sObjType = Account.SObjectType;
+        handlerExtension.isDisabled = handlerExtension.isDisabled();
+
+        System.assert(handlerExtension.isDisabled, 'Class was not disabled');
+
+        TriggerHandlerExtension.enableClass('TriggerHandlerExtension');
+        handlerExtension.isDisabled = handlerExtension.isDisabled();
+
+        System.assert(!handlerExtension.isDisabled, 'Class was not enabled after disabling');
+    }
+
+    @isTest
     static void disabledForProfile_Object_positive() {
         Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
 
