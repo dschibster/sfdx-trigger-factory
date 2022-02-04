@@ -75,7 +75,7 @@ private class TriggerHandlerExtensionTest {
             System.assert(handlerExtension.lstDelete != null, 'lstDelete is NULL');
 
             // check if Trigger is disabled
-            System.assert(handlerExtension.isDisabled, 'Trigger is enabled');
+            System.assert(!handlerExtension.isDisabled, 'Trigger is disabled^');
             System.assert(TriggerSettings.getInstance().disabledObjects.isEmpty());
         }
     }
@@ -153,7 +153,7 @@ private class TriggerHandlerExtensionTest {
             System.assert(handlerExtension.lstDelete != null, 'lstDelete is NULL');
 
             // check if Trigger is disabled
-            System.assert(handlerExtension.isDisabled, 'Trigger is enabled');
+            System.assert(!handlerExtension.isDisabled, 'Trigger is disabled');
             System.assert(TriggerSettings.getInstance().disabledObjects.isEmpty());
         }
     }
@@ -162,7 +162,7 @@ private class TriggerHandlerExtensionTest {
     static void disabledForProfile_Class_positive() {
         Profile objProfile = [SELECT Id, Name FROM profile WHERE Name LIKE '%Admin%' LIMIT 1];
 
-        TriggerSettings__c newSettingForUser = new TriggerSettings__c(SetupOwnerId = objProfile.Id, DisabledObjects__c = 'TriggerHandlerExtension');
+        TriggerSettings__c newSettingForUser = new TriggerSettings__c(SetupOwnerId = objProfile.Id, DisabledHandlers__c = 'TriggerHandlerExtension');
         insert newSettingForUser;
 
         User objUser = new User(
@@ -231,7 +231,7 @@ private class TriggerHandlerExtensionTest {
             System.assert(handlerExtension.lstDelete != null, 'lstDelete is NULL');
 
             // check if Trigger is disabled
-            System.assert(handlerExtension.isDisabled, 'Trigger is enabled');
+            System.assert(!handlerExtension.isDisabled, 'Trigger is disabled');
             System.assert(TriggerSettings.getInstance().disabledTriggers.isEmpty());
         }
     }
@@ -259,7 +259,7 @@ private class TriggerHandlerExtensionTest {
         System.assert(resultUserInsert.isSuccess(), 'Testuser insert has failed');
 
         System.runAs(objUser) {
-            TriggerSettings__c newSettingForUser = new TriggerSettings__c(SetupOwnerId = objUser.Id, DisabledObjects__c = 'TriggerHandlerExtension');
+            TriggerSettings__c newSettingForUser = new TriggerSettings__c(SetupOwnerId = objUser.Id, DisabledHandlers__c = 'TriggerHandlerExtension');
             insert newSettingForUser;
 
             TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
@@ -309,7 +309,7 @@ private class TriggerHandlerExtensionTest {
             System.assert(handlerExtension.lstDelete != null, 'lstDelete is NULL');
 
             // check if Trigger is disabled
-            System.assert(handlerExtension.isDisabled, 'Trigger is enabled');
+            System.assert(!handlerExtension.isDisabled, 'Trigger is disabled');
             System.assert(TriggerSettings.getInstance().disabledTriggers.isEmpty());
         }
     }

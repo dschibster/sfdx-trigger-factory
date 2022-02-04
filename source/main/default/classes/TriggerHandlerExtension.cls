@@ -3,6 +3,7 @@ public virtual without sharing class TriggerHandlerExtension {
     public Boolean isDisabled;
     public static Set<SObjectType> disabledObjects = new Set<SObjectType>();
     public static Set<String> disabledClasses = new Set<String>();
+    public String handlerName;
     @TestVisible
     private static Map<String, LoopCount> loopCountMap;
 
@@ -136,12 +137,12 @@ public virtual without sharing class TriggerHandlerExtension {
     @TestVisible
     public virtual Boolean isDisabled() {
         TriggerSettings ts = TriggerSettings.getInstance();
-        String className = getHandlerName();
 
-        return disabledObjects.contains(this.sObjType) ||
-            disabledClasses.contains(className.toUpperCase()) ||
+        return ts.isAllTriggersDisabled() ||
             ts.isDisabledBySObjectType(this.sObjType) ||
-            ts.isDisabledByClassName(className);
+            disabledObjects.contains(this.sObjType) ||
+            ts.isDisabledByClassName(getHandlerName()) ||
+            disabledClasses.contains(getHandlerName().toUpperCase());
     }
 
     /**
@@ -151,7 +152,10 @@ public virtual without sharing class TriggerHandlerExtension {
      */
     @TestVisible
     private String getHandlerName() {
-        return String.valueOf(this).substring(0, String.valueOf(this).indexOf(':'));
+        if (handlerName == null) {
+            handlerName = String.valueOf(this).substring(0, String.valueOf(this).indexOf(':'));
+        }
+        return handlerName;
     }
 
     /**

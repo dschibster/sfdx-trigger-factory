@@ -13,6 +13,7 @@ public without sharing class TriggerMapping {
             for (TriggerFactorySetting__mdt setting : [
                 SELECT SObjectName__c, ClassName__c
                 FROM TriggerFactorySetting__mdt
+                WHERE IsDisabled__c = FALSE
                 ORDER BY SObjectName__c, OrderOfExecution__c
             ]) {
                 if (!instance.containsKey(setting.SObjectName__c.toUpperCase())) {

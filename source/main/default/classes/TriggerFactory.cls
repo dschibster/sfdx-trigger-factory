@@ -1,4 +1,7 @@
 public without sharing class TriggerFactory {
+
+    @TestVisible private static Boolean hasReachedErrorLog = false;
+
     /**
      * @description Retrieves Handlers from Trigger Factory Setting and executes them by Order of Execution
      * @author mindsquare AG
@@ -10,7 +13,9 @@ public without sharing class TriggerFactory {
         List<TriggerHandlerExtension> handlers = getHandlers(objType);
 
         if (handlers.size() == 0) {
-            throw new TriggerException('No Trigger Handler registered for Object Type: ' + objType);
+            System.debug(LoggingLevel.ERROR, 'No Trigger Handler registered or all Triggers disabled for Object Type: ' + objType);
+            hasReachedErrorLog = true;
+            return;
         }
 
         for (TriggerHandlerExtension handler : handlers) {
@@ -105,8 +110,5 @@ public without sharing class TriggerFactory {
         }
 
         return handlers;
-    }
-
-    public class TriggerException extends Exception {
     }
 }

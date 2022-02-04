@@ -7,5 +7,8 @@ public with sharing class TriggerMappingTest {
 
         Map<String, List<String>> trigMap = TriggerMapping.getInstance();
         System.assert(trigMap.size() > 0);
+
+        //Additionally DummyObject2 should not come up in this instance, because it is disabled.
+        System.assert(!trigMap.containsKey('DUMMYOBJECT2'));
     }
 }

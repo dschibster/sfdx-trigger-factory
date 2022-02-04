@@ -1,7 +1,7 @@
 @isTest
 public with sharing class TriggerFactoryTest {
     @isTest
-    static void executeDummyTrigger_throwException() {
+    static void executeDummyTrigger_noHandlers() {
         Exception ex;
         if (TriggerMapping.getInstance().containsKey('LEAD')) {
             TriggerMapping.getInstance().remove('LEAD');
@@ -11,7 +11,7 @@ public with sharing class TriggerFactoryTest {
         } catch (Exception e) {
             ex = e;
         }
-        System.assert(ex != null, 'TriggerException was not thrown');
+        System.assert(TriggerFactory.hasReachedErrorLog, 'Trigger Handlers were executed although they were not supposed to');
     }
 
     @isTest
