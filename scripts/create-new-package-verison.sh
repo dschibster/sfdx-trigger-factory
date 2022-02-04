@@ -20,13 +20,9 @@ fi
 echo "New Package Version Id: $PACKAGEVERSIONID"
 
 echo "Updating docs"
-#updates docs with new installation id
-sed -i "s/04t.\{15\}/$PACKAGEVERSIONID/g" docs/installation.md
-
 #updates README with new installation id
 sed -i "s/04t.\{15\}/$PACKAGEVERSIONID/g" README.md
 
-git add docs/installation.md
 git add README.md
 git add sfdx-project.json
 git config --local user.email "action@github.com"
