@@ -5,7 +5,7 @@
             "default": true,
             "package": "sfdx-trigger-factory",
             "versionName": "ver. 1.1.0",
-            "versionNumber": "1.1.0.0",
+            "versionNumber": "1.2.-1.0",
             "unpackagedMetadata": {
                 "path": "unmanaged"
             }
