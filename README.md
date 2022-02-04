@@ -5,12 +5,12 @@
 <div>
 <span><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijXFAAY">
   <img alt="Deploy to Salesforce"
-       src="https://github.com/dschibster/ms-triggerframework/blob/master/resources/deploy_unlocked.png">
+       src="https://github.com/dschibster/ms-triggerframework/blob/master/resources/deploy_unlocked.png" width="300">
 </a>
 <span>
 <a href="https://githubsfdeploy.herokuapp.com">
   <img alt="Deploy to Salesforce"
-       src="https://github.com/dschibster/ms-triggerframework/blob/master/resources/deploy_unmanaged.png">
+       src="https://github.com/dschibster/ms-triggerframework/blob/master/resources/deploy_unmanaged.png" width="300">
 </a>
 </span>
 <div>
@@ -18,7 +18,7 @@ For your Sandbox:
   <div><span>
     <a href="https://test.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijXFAAY">
   <img alt="Deploy to Salesforce"
-       src="https://github.com/dschibster/ms-triggerframework/blob/master/resources/deploy_unlocked.png">
+       src="https://github.com/dschibster/ms-triggerframework/blob/master/resources/deploy_unlocked.png" width="300">
 </a></span><div>
 
 
