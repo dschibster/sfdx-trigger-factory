@@ -1,5 +1,9 @@
+[![codecov](https://codecov.io/gh/dschibster/sfdx-trigger-factory/branch/master/graph/badge.svg?token=WPU1N1CNE8)](https://codecov.io/gh/dschibster/sfdx-trigger-factory)
+[![Code Coverage and Release](https://github.com/dschibster/sfdx-trigger-factory/actions/workflows/deployment.yml/badge.svg)](https://github.com/dschibster/sfdx-trigger-factory/actions/workflows/deployment.yml)
+
+# Installation
 <div>
-<span><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ibshAAA">
+<span><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijXFAAY">
   <img alt="Deploy to Salesforce"
        src="https://github.com/dschibster/ms-triggerframework/blob/master/resources/deploy_unlocked.png">
 </a>
@@ -12,7 +16,7 @@
 <div>
 For your Sandbox:
   <div><span>
-    <a href="https://test.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ibshAAA">
+    <a href="https://test.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijXFAAY">
   <img alt="Deploy to Salesforce"
        src="https://github.com/dschibster/ms-triggerframework/blob/master/resources/deploy_unlocked.png">
 </a></span><div>

@@ -1,50 +1,55 @@
 public without sharing class TriggerSettings {
-    
-    public Map<Id, Profile> profileMapById;
-    @TestVisible private Map<String, Set<String>> disabledTriggerMapBySObjectType;
-    @TestVisible private Map<String, Set<String>> disabledTriggerMapByClassName;
-    @TestVisible private Set<String> disabledClassesAndObjects;
+    @TestVisible
+    private Set<String> disabledTriggers = new Set<String>();
+    @TestVisible
+    private Set<String> disabledObjects = new Set<String>();
+    @TestVisible
+    private Boolean isEverythingDisabled = false;
 
     public static TriggerSettings instance;
 
-    public TriggerSettings(){
-
+    public TriggerSettings() {
     }
 
     /**
-     * @description Singleton Design Pattern method for TriggerSettings. For each control flow, this class only needs to be instantiated once. AFter that we are working with the same instance.
+     * @description Singleton Design Pattern method for TriggerSettings. For each control flow, this class only needs to be instantiated once. After that we are working with the same instance.
      * @author mindsquare AG
      * @return The currently instantiated instance of TriggerSettings
      */
-    public static TriggerSettings getInstance(){
-        if (instance == null){
+    public static TriggerSettings getInstance() {
+        if (instance == null) {
             instance = new TriggerSettings();
             instance.load();
         }
         return instance;
     }
 
-
     /**
-     * @description Loads all different possibilities of the currently running Trigger Handler to be disabled with Custom Metadata
+     * @description Loads all different possibilities of the currently running Trigger Handler to be disabled with Custom Settings
      * @author mindsquare AG
      */
-    public void load(){
-        this.profileMapById = new Map<Id, Profile>([SELECT Id, Name FROM Profile]);
-        this.disabledTriggerMapBySObjectType = new Map<String, Set<String>>();
-        this.disabledTriggerMapByClassName = new Map<String, Set<String>>();
-        this.disabledClassesAndObjects = new Set<String>();
-
-        List<TriggerSetting__mdt> triggerSettings = [SELECT SObjectName__c, ClassName__c, UserNamesIds__c, ProfileNamesIds__c FROM TriggerSetting__mdt WHERE IsDisabled__c = true];
-
-        for(TriggerSetting__mdt setting : triggerSettings){
-            
-            if(setting.SObjectName__c != null){
-                addStringsToMap(this.disabledTriggerMapBySObjectType, setting, 'SObjectName__c');
-            } else if(setting.ClassName__c != null){
-                addStringsToMap(this.disabledTriggerMapByClassName, setting, 'ClassName__c');
-            }
+    public void load() {
+        TriggerSettings__c triggerSetting = TriggerSettings__c.getInstance();
+        if (triggerSetting.DisableAllTriggers__c) {
+            this.isEverythingDisabled = true;
+            return;
         }
+        if (String.isNotBlank(triggerSetting.DisabledObjects__c)) {
+            disabledObjects = new Set<String>(triggerSetting.DisabledObjects__c.toUpperCase().split(';'));
+        }
+        if (String.isNotBlank(triggerSetting.DisabledHandlers__c)) {
+            disabledTriggers = new Set<String>(triggerSetting.DisabledHandlers__c.toUpperCase().split(';'));
+        }
+    }
+
+    /**
+     * @description Checks if all Triggers  are disabled.
+     * @author mindsquare AG
+     * @param sobjType the SObject Type you want to check against (normally run directly in the Trigger Handler constructor)
+     * @return          The result is true if there is any indication that the SObject is disabled and false otherwise
+     */
+    public Boolean isAllTriggersDisabled() {
+        return this.isEverythingDisabled;
     }
 
     /**
@@ -53,20 +58,14 @@ public without sharing class TriggerSettings {
      * @param sobjType the SObject Type you want to check against (normally run directly in the Trigger Handler constructor)
      * @return          The result is true if there is any indication that the SObject is disabled and false otherwise
      */
-    public Boolean isDisabledBySObjectType(SObjectType sobjType){
-        if(sobjType != null){
+    public Boolean isDisabledBySObjectType(SObjectType sobjType) {
+        if (this.isEverythingDisabled) {
+            return true;
+        }
+        if (sobjType != null) {
             String sobjectName = sobjType.getDescribe().getName().toUpperCase();
-
-            return this.disabledClassesAndObjects.contains(sobjectName) 
-            || (this.disabledTriggerMapBySObjectType.containsKey(sobjectName) &&
-                (
-                    this.disabledTriggerMapBySObjectType.get(sobjectName).contains(UserInfo.getUserId().toUpperCase())
-                    || this.disabledTriggerMapBySObjectType.get(sobjectName).contains(UserInfo.getUserName().toUpperCase())
-                    || this.disabledTriggerMapBySObjectType.get(sobjectName).contains(UserInfo.getProfileId().toUpperCase())
-                    || this.disabledTriggerMapBySObjectType.get(sobjectName).contains(this.profileMapById.get(UserInfo.getProfileId()).Name.toUpperCase())
-                )
-            );
-        }else{
+            return this.disabledObjects.contains(sobjectName);
+        } else {
             return false;
         }
     }
@@ -77,44 +76,11 @@ public without sharing class TriggerSettings {
      * @param className The class name of the Trigger Handler currently running
      * @return          The result is true if there is any indication that the class is disabled and false otherwise
      */
-    public Boolean isDisabledByClassName(String className){
+    public Boolean isDisabledByClassName(String className) {
+        if (this.isEverythingDisabled) {
+            return true;
+        }
         className = className.toUpperCase();
-
-        return this.disabledClassesAndObjects.contains(className)  
-            || (this.disabledTriggerMapByClassName.containsKey(className) && 
-                (
-                    this.disabledTriggerMapByClassName.get(className).contains(UserInfo.getUserId().toUpperCase())
-                    || this.disabledTriggerMapByClassName.get(className).contains(UserInfo.getUserName().toUpperCase())
-                    || this.disabledTriggerMapByClassName.get(className).contains(UserInfo.getProfileId().toUpperCase())
-                    || this.disabledTriggerMapByClassName.get(className).contains(this.profileMapById.get(UserInfo.getProfileId()).Name.toUpperCase())
-                )
-            );
+        return this.disabledTriggers.contains(className);
     }
-
-    /**
-     * @description Puts the corresponsing fields of the Trigger Settings Custom Metadata into a Map for Profiles/Users or in a Set for things generally disabled
-     * @author mindsquare AG
-     * @param  disableMap The map that contains the correct type of disabling (object or class)
-     * @param  setting    The Trigger Setting containing the relevant data.
-     * @param  fieldName  The field name of the Trigger Setting that contains the correct data (object name or class name)
-     */
-    @TestVisible 
-    private void addStringsToMap(Map<String, Set<String>> disableMap, TriggerSetting__mdt setting, String fieldName){
-        String objectOrClass = (String) setting.get(fieldName);
-        objectOrClass = objectOrClass.toUpperCase();
-        if(!disableMap.containsKey(objectOrClass)){
-            disableMap.put(objectOrClass, new Set<String>());
-        }
-        if(setting.UserNamesIds__c != null){
-            disableMap.get(objectOrClass).addAll(setting.UserNamesIds__c.toUpperCase().split(','));
-        }
-        if(setting.ProfileNamesIds__c != null){
-            disableMap.get(objectOrClass).addAll(setting.ProfileNamesIds__c.toUpperCase().split(','));
-        }
-        if(setting.ProfileNamesIds__c == null && setting.UserNamesIds__c == null){
-            this.disabledClassesAndObjects.add(objectOrClass);
-        }
-
-    }
-
 }

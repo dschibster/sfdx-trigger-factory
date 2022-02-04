@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DisabledObjects__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Please separate with &quot;;&quot;</inlineHelpText>
+    <label>Disabled Objects</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>

@@ -12,6 +12,10 @@
     </values>
     <values>
         <field>SObjectName__c</field>
-        <value xsi:type="xsd:string">DummyObject</value>
+        <value xsi:type="xsd:string">DummyObject2</value>
+    </values>
+    <values>
+        <field>IsDisabled__c</field>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
 </CustomMetadata>
