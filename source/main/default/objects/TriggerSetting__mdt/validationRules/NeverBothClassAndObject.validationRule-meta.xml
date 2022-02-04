@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>NeverBothClassAndObject</fullName>
-    <active>true</active>
-    <errorConditionFormula>NOT(ISBLANK(SObjectName__c)) &amp;&amp; NOT(ISBLANK(ClassName__c))</errorConditionFormula>
-    <errorMessage>You can never disable both granular classes and entire Objects in the same setting. Please select one to decide on.</errorMessage>
-</ValidationRule>
