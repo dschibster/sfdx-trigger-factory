@@ -1,6 +1,6 @@
 public without sharing class TriggerFactory {
-
-    @TestVisible private static Boolean hasReachedErrorLog = false;
+    @TestVisible
+    private static Boolean hasReachedErrorLog = false;
 
     /**
      * @description Retrieves Handlers from Trigger Factory Setting and executes them by Order of Execution
@@ -103,9 +103,11 @@ public without sharing class TriggerFactory {
 
         String objectName = objType.getDescribe().getName().toUpperCase();
 
-        if (TriggerMapping.getInstance().containsKey(objectName)) {
-            for (String className : TriggerMapping.getInstance().get(objectName)) {
-                handlers.add((TriggerHandlerExtension) Type.forName(className).newInstance());
+        if (TriggerMapping.getInstance().mappedHandlers.containsKey(objectName)) {
+            for (String className : TriggerMapping.getInstance().mappedHandlers.get(objectName)) {
+                TriggerHandlerExtension handler = (TriggerHandlerExtension) Type.forName(className).newInstance();
+                handler.handlerName = className;
+                handlers.add(handler);
             }
         }
 
