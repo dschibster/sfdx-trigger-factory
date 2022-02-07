@@ -3,8 +3,8 @@ public with sharing class TriggerFactoryTest {
     @isTest
     static void executeDummyTrigger_noHandlers() {
         Exception ex;
-        if (TriggerMapping.getInstance().containsKey('LEAD')) {
-            TriggerMapping.getInstance().remove('LEAD');
+        if (TriggerMapping.getInstance().mappedHandlers.containsKey('LEAD')) {
+            TriggerMapping.getInstance().mappedHandlers.remove('LEAD');
         }
         try {
             TriggerFactory.executeTriggerHandlers(Lead.SObjectType);
@@ -17,7 +17,7 @@ public with sharing class TriggerFactoryTest {
     @isTest
     static void executeDummyFactoryMethods() {
         //Dependency Inject into the Trigger Factory in order to have our methods run even though they are not called via Trigger
-        TriggerMapping.getInstance().put('LEAD', new List<String>{ 'TriggerHandlerExtension' });
+        TriggerMapping.getInstance().mappedHandlers.put('LEAD', new List<String>{ 'TriggerHandlerExtension' });
         List<TriggerHandlerExtension> triggerHandlers = TriggerFactory.getHandlers(Lead.SObjectType);
         TriggerHandlerExtension handler = triggerHandlers[0];
 

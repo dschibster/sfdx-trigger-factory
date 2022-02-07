@@ -106,8 +106,13 @@ public virtual without sharing class TriggerHandlerExtension {
             }
         }
 
-        triggerNew = listNew;
-        triggerNewMap = mapNew;
+        if (operation == 'INSERT') {
+            triggerNew = listNew;
+            triggerNewMap = mapNew;
+        } else {
+            triggerOld = listNew;
+            triggerOldMap = mapNew;
+        }
     }
 
     private void filterTriggerListsDelete() {
