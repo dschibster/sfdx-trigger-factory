@@ -19,7 +19,7 @@ public without sharing class TriggerFactory {
         }
 
         for (TriggerHandlerExtension handler : handlers) {
-            execute(handler, Trigger.operationType?.name(), Trigger.new, Trigger.oldMap);
+            execute(handler, handler.triggerContext?.name(), handler.triggerNew, handler.triggerOldMap);
         }
     }
 
@@ -30,65 +30,66 @@ public without sharing class TriggerFactory {
      */
     @TestVisible
     private static void execute(TriggerHandlerExtension handler, String triggerOperation, List<SObject> triggerNew, Map<Id, SObject> triggerOldMap) {
-        if (!handler.isDisabled()) {
-            //Split the operationtype (for example AFTER_INSERT) into its two pieces to determine what we need.
-            List<String> operations = triggerOperation.split('_');
-            Boolean isBefore = operations[0] == 'BEFORE';
-            String dmlOperation = operations[1];
+        if (handler.isDisabled() || handler.hasNoRecordsToProcess()) {
+            return;
+        }
+        //Split the operationtype (for example AFTER_INSERT) into its two pieces to determine what we need.
+        List<String> operations = triggerOperation.split('_');
+        Boolean isBefore = operations[0] == 'BEFORE';
+        String dmlOperation = operations[1];
 
-            // Before Trigger
-            if (isBefore) {
-                // Call the bulk before to handle any caching of data and enable bulkification
-                handler.bulkBefore();
+        // Before Trigger
+        if (isBefore) {
+            // Call the bulk before to handle any caching of data and enable bulkification
+            handler.bulkBefore();
 
-                switch on dmlOperation {
-                    when 'DELETE' {
-                        for (SObject obj : triggerOldMap.values()) {
-                            handler.beforeDelete(obj);
-                        }
-                    }
-                    when 'INSERT' {
-                        for (SObject obj : triggerNew) {
-                            handler.beforeInsert(obj);
-                        }
-                    }
-                    when 'UPDATE' {
-                        for (SObject obj : triggerNew) {
-                            handler.beforeUpdate(triggerOldMap.get(obj.Id), obj);
-                        }
+            switch on dmlOperation {
+                when 'DELETE' {
+                    for (SObject obj : triggerOldMap.values()) {
+                        handler.beforeDelete(obj);
                     }
                 }
-            } else {
-                // Call the bulk after to handle any caching of data and enable bulkification
-                handler.bulkAfter();
-
-                switch on dmlOperation {
-                    when 'DELETE' {
-                        for (SObject obj : triggerOldMap.values()) {
-                            handler.afterDelete(obj);
-                        }
+                when 'INSERT' {
+                    for (SObject obj : triggerNew) {
+                        handler.beforeInsert(obj);
                     }
-                    when 'INSERT' {
-                        for (SObject obj : triggerNew) {
-                            handler.afterInsert(obj);
-                        }
-                    }
-                    when 'UPDATE' {
-                        for (SObject obj : triggerNew) {
-                            handler.afterUpdate(triggerOldMap.get(obj.Id), obj);
-                        }
-                    }
-                    when 'UNDELETE' {
-                        for (SObject obj : triggerNew) {
-                            handler.afterUndelete(obj);
-                        }
+                }
+                when 'UPDATE' {
+                    for (SObject obj : triggerNew) {
+                        handler.beforeUpdate(triggerOldMap.get(obj.Id), obj);
                     }
                 }
             }
+        } else {
+            // Call the bulk after to handle any caching of data and enable bulkification
+            handler.bulkAfter();
 
-            // Perform any post processing
-            handler.andFinally();
+            switch on dmlOperation {
+                when 'DELETE' {
+                    for (SObject obj : triggerOldMap.values()) {
+                        handler.afterDelete(obj);
+                    }
+                }
+                when 'INSERT' {
+                    for (SObject obj : triggerNew) {
+                        handler.afterInsert(obj);
+                    }
+                }
+                when 'UPDATE' {
+                    for (SObject obj : triggerNew) {
+                        handler.afterUpdate(triggerOldMap.get(obj.Id), obj);
+                    }
+                }
+                when 'UNDELETE' {
+                    for (SObject obj : triggerNew) {
+                        handler.afterUndelete(obj);
+                    }
+                }
+            }
         }
+
+        // Perform any post processing
+        handler.andFinally();
     }
 
     /**
@@ -107,6 +108,7 @@ public without sharing class TriggerFactory {
             for (String className : TriggerMapping.getInstance().mappedHandlers.get(objectName)) {
                 TriggerHandlerExtension handler = (TriggerHandlerExtension) Type.forName(className).newInstance();
                 handler.handlerName = className;
+                handler.triggerContext = Trigger.operationType;
                 handlers.add(handler);
             }
         }

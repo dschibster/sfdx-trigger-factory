@@ -1,9 +1,12 @@
 public virtual without sharing class TriggerHandlerExtension {
     public Schema.sObjectType sObjType;
     public Boolean isDisabled;
+    public String handlerName;
+    public TriggerOperation triggerContext;
+
     public static Set<SObjectType> disabledObjects = new Set<SObjectType>();
     public static Set<String> disabledClasses = new Set<String>();
-    public String handlerName;
+
     @TestVisible
     private static Map<String, LoopCount> loopCountMap;
 
@@ -60,7 +63,7 @@ public virtual without sharing class TriggerHandlerExtension {
 
         switch on operations[1] {
             when 'INSERT' {
-                filterTriggerListsInsertUndelete(operations[0], operations[1]);
+                filterTriggerListsInsertUndelete();
             }
             when 'UPDATE' {
                 filterTriggerListsUpdate();
@@ -69,7 +72,7 @@ public virtual without sharing class TriggerHandlerExtension {
                 filterTriggerListsDelete();
             }
             when 'UNDELETE' {
-                filterTriggerListsInsertUndelete(operations[0], operations[1]);
+                filterTriggerListsInsertUndelete();
             }
         }
     }
@@ -91,28 +94,21 @@ public virtual without sharing class TriggerHandlerExtension {
         triggerOldMap = oldMapNew;
     }
 
-    private void filterTriggerListsInsertUndelete(String context, String operation) {
-        List<SObject> iteratedList = operation == 'INSERT' ? triggerNew : triggerOld;
-        List<SObject> listNew = new List<SObject>();
-        Map<Id, SObject> mapNew = new Map<Id, SObject>();
-        Boolean isAfterInsert = context == 'AFTER';
+    private void filterTriggerListsInsertUndelete() {
+        List<SObject> newListNew = new List<SObject>();
+        Map<Id, SObject> newMapNew = new Map<Id, SObject>();
 
-        for (SObject sobj : iteratedList) {
+        for (SObject sobj : triggerNew) {
             if (filteredRecordTypes.contains((Id) sobj.get('RecordTypeId'))) {
-                listNew.add(sobj);
-                if (isAfterInsert) {
-                    mapNew.put(sobj.Id, sobj);
+                newListNew.add(sobj);
+                if (sobj.Id != null) {
+                    newMapNew.put(sobj.Id, sobj);
                 }
             }
         }
 
-        if (operation == 'INSERT') {
-            triggerNew = listNew;
-            triggerNewMap = mapNew;
-        } else {
-            triggerOld = listNew;
-            triggerOldMap = mapNew;
-        }
+        triggerNew = newListNew;
+        triggerNewMap = newMapNew;
     }
 
     private void filterTriggerListsDelete() {
@@ -128,6 +124,13 @@ public virtual without sharing class TriggerHandlerExtension {
 
         triggerOld = oldListNew;
         triggerOldMap = oldMapNew;
+    }
+
+    public Boolean hasNoRecordsToProcess() {
+        if (this.triggerContext.name().containsIgnoreCase('DELETE')) {
+            return triggerOld.isEmpty();
+        }
+        return triggerNew.isEmpty();
     }
 
     /**
