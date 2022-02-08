@@ -528,13 +528,14 @@ private class TriggerHandlerExtensionTest {
 
         //Now we can create two Accounts and check that they are only calling the respective Trigger Handler function
 
-        Account acc = new Account(Name = 'Test Person Account', RecordTypeId = personAccountRecordTypeId);
+        Account acc = new Account(Name = 'Test Person Account');
+        acc.put('RecordTypeId', personAccountRecordTypeId); //Dynamic Apex here to resolve dependency on the Record Types being deployed after the the Test Class.
         insert acc;
         System.assert(calledHandlers.contains('PersonAccountHandler'), 'Person Account Handler was not called');
         System.assert(!calledHandlers.contains('BusinessAccountHandler'), 'beforeInsert Method for Business Account Handler was called for Person Account');
 
         //When the Account is updated, only the new Record Type is relevant.
-        acc.RecordTypeId = businessAccountRecordTypeId;
+        acc.put('RecordTypeId', businessAccountRecordTypeId);
         calledHandlers = new Set<String>();
         update acc;
         System.assert(calledHandlers.contains('BusinessAccountHandler'), 'Business Account Handler was not called');
