@@ -1,6 +1,7 @@
 @IsTest
 private class TriggerHandlerExtensionTest {
     private static Boolean isMultiCurrency = UserInfo.isMultiCurrencyOrganization();
+    public static Set<String> calledHandlers = new Set<String>(); //used to benchmark which trigger handlers were called between filtered RecordTypes
 
     @isTest
     static void disabledInApex_Object_positive() {
@@ -514,5 +515,33 @@ private class TriggerHandlerExtensionTest {
             // check if recursion exception have been thrown
             System.assert(!hasRecursionException, 'Recursion exception has been thrown');
         }
+    }
+
+    @isTest
+    static void testRecordTypeFilter() {
+        //First we need to make sure that the correct Record Type Ids are in use, as these will differ on new Scratch Orgs.
+        Id personAccountRecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Person_Account').getRecordTypeId();
+        Id businessAccountRecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Business_Account').getRecordTypeId();
+
+        TriggerMapping.getInstance().recordTypeFilter.put('PersonAccountHandler', new Set<Id>(new List<Id>{ personAccountRecordTypeId }));
+        TriggerMapping.getInstance().recordTypeFilter.put('BusinessAccountHandler', new Set<Id>(new List<Id>{ businessAccountRecordTypeId }));
+
+        //Now we can create two Accounts and check that they are only calling the respective Trigger Handler function
+
+        Account acc = new Account(Name = 'Test Person Account', RecordTypeId = personAccountRecordTypeId);
+        insert acc;
+        System.assert(calledHandlers.contains('PersonAccountHandler'), 'Person Account Handler was not called');
+        System.assert(!calledHandlers.contains('BusinessAccountHandler'), 'beforeInsert Method for Business Account Handler was called for Person Account');
+
+        //When the Account is updated, only the new Record Type is relevant.
+        acc.RecordTypeId = businessAccountRecordTypeId;
+        calledHandlers = new Set<String>();
+        update acc;
+        System.assert(calledHandlers.contains('BusinessAccountHandler'), 'Business Account Handler was not called');
+        System.assert(!calledHandlers.contains('PersonAccountHandler'), 'beforeUpdate Method for Person Account Handler was called for Business Account');
+
+        //The last two checks are done mostly for coverage, as the two examples make it clear that the filter is working.
+        delete acc;
+        undelete acc;
     }
 }
