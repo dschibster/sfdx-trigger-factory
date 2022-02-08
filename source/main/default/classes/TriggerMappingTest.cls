@@ -10,5 +10,6 @@ public with sharing class TriggerMappingTest {
 
         //Additionally DummyObject2 should not come up in this instance, because it is disabled.
         System.assert(!trigMap.mappedHandlers.containsKey('DUMMYOBJECT2'));
+        System.assert(trigMap.recordTypeFilter.containsKey('PersonAccountHandler'));
     }
 }

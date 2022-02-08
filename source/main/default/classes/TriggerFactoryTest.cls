@@ -27,12 +27,24 @@ public with sharing class TriggerFactoryTest {
         insert leadList;
         Map<Id, Lead> leadMap = new Map<Id, Lead>(leadList);
 
-        TriggerFactory.execute(handler, 'BEFORE_INSERT', leadList, null);
-        TriggerFactory.execute(handler, 'BEFORE_DELETE', null, leadMap);
-        TriggerFactory.execute(handler, 'BEFORE_UPDATE', leadList, leadMap);
-        TriggerFactory.execute(handler, 'AFTER_INSERT', leadList, null);
-        TriggerFactory.execute(handler, 'AFTER_DELETE', null, leadMap);
-        TriggerFactory.execute(handler, 'AFTER_UPDATE', leadList, leadMap);
-        TriggerFactory.execute(handler, 'AFTER_UNDELETE', leadList, null);
+        handler.fillTriggerCollections(leadList, new Map<Id, Lead>(leadList), null, null);
+        handler.triggerContext = TriggerOperation.BEFORE_INSERT;
+        TriggerFactory.execute(handler);
+        handler.triggerContext = TriggerOperation.AFTER_INSERT;
+        TriggerFactory.execute(handler);
+        handler.triggerContext = TriggerOperation.AFTER_UNDELETE;
+        TriggerFactory.execute(handler);
+
+        handler.fillTriggerCollections(null, null, leadList, new Map<Id, Lead>(leadList));
+        handler.triggerContext = TriggerOperation.BEFORE_DELETE;
+        TriggerFactory.execute(handler);
+        handler.triggerContext = TriggerOperation.AFTER_DELETE;
+        TriggerFactory.execute(handler);
+
+        handler.fillTriggerCollections(leadList, new Map<Id, Lead>(leadList), leadList, new Map<Id, Lead>(leadList));
+        handler.triggerContext = TriggerOperation.BEFORE_UPDATE;
+        TriggerFactory.execute(handler);
+        handler.triggerContext = TriggerOperation.AFTER_UPDATE;
+        TriggerFactory.execute(handler);
     }
 }
