@@ -4,8 +4,8 @@
             "path": "source",
             "default": true,
             "package": "sfdx-trigger-factory",
-            "versionName": "ver. 1.1.0",
-            "versionNumber": "1.1.0.0",
+            "versionName": "ver. 1.2.0",
+            "versionNumber": "1.2.0.0",
             "unpackagedMetadata": {
                 "path": "unmanaged"
             }
@@ -20,6 +20,7 @@
     "packageAliases": {
         "sfdx-trigger-factory": "0Ho09000000sY6qCAE",
         "sfdx-trigger-factory@1.0.0.0": "04t09000000ibshAAA",
-        "sfdx-trigger-factory@1.1.0-0": "04t09000000ijXKAAY"
+        "sfdx-trigger-factory@1.1.0-0": "04t09000000ijXKAAY",
+        "sfdx-trigger-factory@1.2.0-0": "04t09000000ijXeAAI"
     }
 }

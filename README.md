@@ -3,7 +3,7 @@
 
 # Installation
 <div>
-<span><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijXKAAY">
+<span><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijXeAAI">
   <img alt="Deploy to Salesforce"
        src="https://github.com/dschibster/sfdx-trigger-factory/blob/master/resources/button_install-unlocked-package.png" >
 </a>
@@ -16,7 +16,7 @@
 <div>
 For your Sandbox:
   <div><span>
-    <a href="https://test.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijXKAAY">
+    <a href="https://test.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijXeAAI">
   <img alt="Deploy to Salesforce"
        src="https://github.com/dschibster/ms-triggerframework/blob/master/resources/button_install-unlocked-package.png">
 </a></span><div>
@@ -31,7 +31,6 @@ For your Sandbox:
 ### Using the Trigger Framework ###
 The classes provided by the Framework do not need to be changed in any way, as they work on their own and only serve to offer you a template for your own Trigger Handlers.
 
-`ITrigger` offers methods to be executed by the `TriggerFactory`
 
 `TriggerFactory` fetches the Trigger Handlers to execute and executes them.
 
@@ -39,7 +38,7 @@ The classes provided by the Framework do not need to be changed in any way, as t
 
 `TriggerSettings` make checks on recursion and disabling of your Triggers.
 
-`TriggerHandlerExtension` is a virtual class for your own Trigger Handlers to extend. It already implements `ITrigger` so you only have to implement methods that are of interest to you. It additionally gives you access to recursion checks, disabling of triggers and more.
+`TriggerHandlerExtension` is a virtual class for your own Trigger Handlers to extend. It additionally gives you access to recursion checks, disabling of triggers and more. It has virtual implementations of all Trigger Methods, so you only have to override those you actually need.
 
 
 
@@ -81,9 +80,9 @@ public class AccountHandler extends TriggerHandlerExtension{
 
 
 ### What do the methods do? ###
-The interface `ITrigger` has several different methods that are executed at different points and are to be used for different purposes. 
+The virtual class `TriggerHandlerExtension` has several different methods that are executed at different points and are to be used for different purposes. 
 
-When executing a Trigger Handler, this Trigger Framework makes use of the methods offered by `ITrigger`.
+When executing a Trigger Handler, this Trigger Framework makes use of the methods offered by `TriggerHandlerExtension`.
 
 #### Bulk Operations
 `bulkBefore` is called before processing of records in any BEFORE context (before insert, before update, before delete). Use it for bulkified methods or to get data into your Handler that you want to use at a later time.
@@ -91,7 +90,7 @@ When executing a Trigger Handler, this Trigger Framework makes use of the method
 `bulkAfter` behaves the same as `bulkBefore`, but is executed before any AFTER context. (after insert, after update, after delete). Use it for bulkified methods or caching of data.
 
 #### Single-Record processing
-Absolutely **DO NOT** use DML or SOQL in these methods!
+Absolutely **DO NOT** use DML or SOQL in these methods! They are executed on a per-record basis and it is highly recommended to use database-independent automations here, such as fetching data from a Map and doing some logic based on that.
 
 
 `beforeInsert(SObject newSO)` processes a single record (`newSO`) in your BEFORE_INSERT TriggerOperation and is called for each of your records. 

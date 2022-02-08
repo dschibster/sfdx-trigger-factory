@@ -1,6 +1,6 @@
 public without sharing class TriggerFactory {
-
-    @TestVisible private static Boolean hasReachedErrorLog = false;
+    @TestVisible
+    private static Boolean hasReachedErrorLog = false;
 
     /**
      * @description Retrieves Handlers from Trigger Factory Setting and executes them by Order of Execution
@@ -19,7 +19,7 @@ public without sharing class TriggerFactory {
         }
 
         for (TriggerHandlerExtension handler : handlers) {
-            execute(handler, Trigger.operationType?.name(), Trigger.new, Trigger.oldMap);
+            execute(handler);
         }
     }
 
@@ -29,66 +29,67 @@ public without sharing class TriggerFactory {
      * @param  handler The implementation of the Trigger Handler.
      */
     @TestVisible
-    private static void execute(TriggerHandlerExtension handler, String triggerOperation, List<SObject> triggerNew, Map<Id, SObject> triggerOldMap) {
-        if (!handler.isDisabled()) {
-            //Split the operationtype (for example AFTER_INSERT) into its two pieces to determine what we need.
-            List<String> operations = triggerOperation.split('_');
-            Boolean isBefore = operations[0] == 'BEFORE';
-            String dmlOperation = operations[1];
+    private static void execute(TriggerHandlerExtension handler) {
+        if (handler.isDisabled() || handler.hasNoRecordsToProcess()) {
+            return;
+        }
+        //Split the operationtype (for example AFTER_INSERT) into its two pieces to determine what we need.
+        List<String> operations = handler.triggerContext.name().split('_');
+        Boolean isBefore = operations[0] == 'BEFORE';
+        String dmlOperation = operations[1];
 
-            // Before Trigger
-            if (isBefore) {
-                // Call the bulk before to handle any caching of data and enable bulkification
-                handler.bulkBefore();
+        // Before Trigger
+        if (isBefore) {
+            // Call the bulk before to handle any caching of data and enable bulkification
+            handler.bulkBefore();
 
-                switch on dmlOperation {
-                    when 'DELETE' {
-                        for (SObject obj : triggerOldMap.values()) {
-                            handler.beforeDelete(obj);
-                        }
-                    }
-                    when 'INSERT' {
-                        for (SObject obj : triggerNew) {
-                            handler.beforeInsert(obj);
-                        }
-                    }
-                    when 'UPDATE' {
-                        for (SObject obj : triggerNew) {
-                            handler.beforeUpdate(triggerOldMap.get(obj.Id), obj);
-                        }
+            switch on dmlOperation {
+                when 'DELETE' {
+                    for (SObject obj : handler.triggerOldMap.values()) {
+                        handler.beforeDelete(obj);
                     }
                 }
-            } else {
-                // Call the bulk after to handle any caching of data and enable bulkification
-                handler.bulkAfter();
-
-                switch on dmlOperation {
-                    when 'DELETE' {
-                        for (SObject obj : triggerOldMap.values()) {
-                            handler.afterDelete(obj);
-                        }
+                when 'INSERT' {
+                    for (SObject obj : handler.triggerNew) {
+                        handler.beforeInsert(obj);
                     }
-                    when 'INSERT' {
-                        for (SObject obj : triggerNew) {
-                            handler.afterInsert(obj);
-                        }
-                    }
-                    when 'UPDATE' {
-                        for (SObject obj : triggerNew) {
-                            handler.afterUpdate(triggerOldMap.get(obj.Id), obj);
-                        }
-                    }
-                    when 'UNDELETE' {
-                        for (SObject obj : triggerNew) {
-                            handler.afterUndelete(obj);
-                        }
+                }
+                when 'UPDATE' {
+                    for (SObject obj : handler.triggerNew) {
+                        handler.beforeUpdate(handler.triggerOldMap.get(obj.Id), obj);
                     }
                 }
             }
+        } else {
+            // Call the bulk after to handle any caching of data and enable bulkification
+            handler.bulkAfter();
 
-            // Perform any post processing
-            handler.andFinally();
+            switch on dmlOperation {
+                when 'DELETE' {
+                    for (SObject obj : handler.triggerOldMap.values()) {
+                        handler.afterDelete(obj);
+                    }
+                }
+                when 'INSERT' {
+                    for (SObject obj : handler.triggerNew) {
+                        handler.afterInsert(obj);
+                    }
+                }
+                when 'UPDATE' {
+                    for (SObject obj : handler.triggerNew) {
+                        handler.afterUpdate(handler.triggerOldMap.get(obj.Id), obj);
+                    }
+                }
+                when 'UNDELETE' {
+                    for (SObject obj : handler.triggerNew) {
+                        handler.afterUndelete(obj);
+                    }
+                }
+            }
         }
+
+        // Perform any post processing
+        handler.andFinally();
     }
 
     /**
@@ -103,9 +104,12 @@ public without sharing class TriggerFactory {
 
         String objectName = objType.getDescribe().getName().toUpperCase();
 
-        if (TriggerMapping.getInstance().containsKey(objectName)) {
-            for (String className : TriggerMapping.getInstance().get(objectName)) {
-                handlers.add((TriggerHandlerExtension) Type.forName(className).newInstance());
+        if (TriggerMapping.getInstance().mappedHandlers.containsKey(objectName)) {
+            for (String className : TriggerMapping.getInstance().mappedHandlers.get(objectName)) {
+                TriggerHandlerExtension handler = (TriggerHandlerExtension) Type.forName(className).newInstance();
+                handler.handlerName = className;
+                handler.triggerContext = Trigger.operationType;
+                handlers.add(handler);
             }
         }
 

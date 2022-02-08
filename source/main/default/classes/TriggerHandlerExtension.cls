@@ -1,11 +1,20 @@
 public virtual without sharing class TriggerHandlerExtension {
     public Schema.sObjectType sObjType;
     public Boolean isDisabled;
+    public String handlerName;
+    public TriggerOperation triggerContext;
+
     public static Set<SObjectType> disabledObjects = new Set<SObjectType>();
     public static Set<String> disabledClasses = new Set<String>();
-    public String handlerName;
+
     @TestVisible
     private static Map<String, LoopCount> loopCountMap;
+
+    public List<SObject> triggerNew = new List<SObject>();
+    public Map<Id, SObject> triggerNewMap = new Map<Id, SObject>();
+    public List<SObject> triggerOld = new List<SObject>();
+    public Map<Id, SObject> triggerOldMap = new Map<Id, SObject>();
+    private Set<Id> filteredRecordTypes;
 
     static {
         loopCountMap = new Map<String, LoopCount>();
@@ -13,8 +22,14 @@ public virtual without sharing class TriggerHandlerExtension {
 
     public TriggerHandlerExtension() {
         if (Trigger.isExecuting) {
-            this.sObjType = Trigger.isDelete ? Trigger.old.getSObjectType() : Trigger.new.getSObjectType();
+            setSObjectType(Trigger.isDelete ? Trigger.old.getSObjectType() : Trigger.new.getSObjectType());
             this.isDisabled = isDisabled();
+            //filter record type here?
+            fillTriggerCollections(Trigger.new, Trigger.newMap, Trigger.old, Trigger.oldMap);
+            if (TriggerMapping.getInstance().recordTypeFilter.containsKey(getHandlerName())) {
+                filteredRecordTypes = TriggerMapping.getInstance().recordTypeFilter.get(getHandlerName());
+                filterRecordsByRecordType(Trigger.operationType.name());
+            }
             if (Trigger.isBefore) {
                 addToLoopCount();
             }
@@ -24,6 +39,95 @@ public virtual without sharing class TriggerHandlerExtension {
         lstUpsert = new List<sObject>();
         lstUpdate = new List<sObject>();
         lstDelete = new List<sObject>();
+    }
+
+    public void setSObjectType(SObjectType sobjType) {
+        this.sObjType = sobjType;
+    }
+
+    public void fillTriggerCollections(List<SObject> newList, Map<Id, SObject> newMap, List<SObject> oldList, Map<Id, SObject> oldMap) {
+        this.triggerNew = newList;
+        this.triggerNewMap = newMap;
+        this.triggerOld = oldList;
+        this.triggerOldMap = oldMap;
+    }
+
+    private void filterRecordsByRecordType(String triggerOperation) {
+        Set<Id> recordTypeIds = TriggerMapping.getInstance().recordTypeFilter.get(getHandlerName());
+        List<SObject> newListFiltered = new List<SObject>();
+        Map<Id, SObject> newMapFiltered = new Map<Id, SObject>();
+        List<SObject> oldListFiltered = new List<SObject>();
+        Map<Id, SObject> oldMapFiltered = new Map<Id, SObject>();
+
+        List<String> operations = triggerOperation.split('_');
+
+        switch on operations[1] {
+            when 'INSERT', 'UNDELETE' {
+                filterTriggerListsInsertUndelete();
+            }
+            when 'UPDATE' {
+                filterTriggerListsUpdate();
+            }
+            when 'DELETE' {
+                filterTriggerListsDelete();
+            }
+        }
+    }
+
+    private void filterTriggerListsUpdate() {
+        Map<Id, SObject> newMapNew = new Map<Id, SObject>();
+        Map<Id, SObject> oldMapNew = new Map<Id, SObject>();
+
+        for (SObject sobj : triggerNew) {
+            if (filteredRecordTypes.contains((Id) sobj.get('RecordTypeId'))) {
+                newMapNew.put(sobj.Id, sobj);
+                oldMapNew.put(sobj.Id, triggerOldMap.get(sobj.Id));
+            }
+        }
+
+        triggerNew = newMapNew.values();
+        triggerNewMap = newMapNew;
+        triggerOld = oldMapNew.values();
+        triggerOldMap = oldMapNew;
+    }
+
+    private void filterTriggerListsInsertUndelete() {
+        List<SObject> newListNew = new List<SObject>();
+        Map<Id, SObject> newMapNew = new Map<Id, SObject>();
+
+        for (SObject sobj : triggerNew) {
+            if (filteredRecordTypes.contains((Id) sobj.get('RecordTypeId'))) {
+                newListNew.add(sobj);
+                if (sobj.Id != null) {
+                    newMapNew.put(sobj.Id, sobj);
+                }
+            }
+        }
+
+        triggerNew = newListNew;
+        triggerNewMap = newMapNew;
+    }
+
+    private void filterTriggerListsDelete() {
+        List<SObject> oldListNew = new List<SObject>();
+        Map<Id, SObject> oldMapNew = new Map<Id, SObject>();
+
+        for (SObject sobj : triggerOld) {
+            if (filteredRecordTypes.contains((Id) sobj.get('RecordTypeId'))) {
+                oldListNew.add(sobj);
+                oldMapNew.put(sobj.Id, sobj);
+            }
+        }
+
+        triggerOld = oldListNew;
+        triggerOldMap = oldMapNew;
+    }
+
+    public Boolean hasNoRecordsToProcess() {
+        if (this.triggerContext.name().containsIgnoreCase('_DELETE')) {
+            return triggerOld.isEmpty();
+        }
+        return triggerNew.isEmpty();
     }
 
     /**
@@ -153,6 +257,7 @@ public virtual without sharing class TriggerHandlerExtension {
     @TestVisible
     private String getHandlerName() {
         if (handlerName == null) {
+            //this will only be called when the Handler is called standalone - without the Trigger factory
             handlerName = String.valueOf(this).substring(0, String.valueOf(this).indexOf(':'));
         }
         return handlerName;
