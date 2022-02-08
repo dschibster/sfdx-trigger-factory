@@ -62,7 +62,7 @@ public virtual without sharing class TriggerHandlerExtension {
         List<String> operations = triggerOperation.split('_');
 
         switch on operations[1] {
-            when 'INSERT' {
+            when 'INSERT', 'UNDELETE' {
                 filterTriggerListsInsertUndelete();
             }
             when 'UPDATE' {
@@ -70,9 +70,6 @@ public virtual without sharing class TriggerHandlerExtension {
             }
             when 'DELETE' {
                 filterTriggerListsDelete();
-            }
-            when 'UNDELETE' {
-                filterTriggerListsInsertUndelete();
             }
         }
     }
@@ -127,7 +124,7 @@ public virtual without sharing class TriggerHandlerExtension {
     }
 
     public Boolean hasNoRecordsToProcess() {
-        if (this.triggerContext.name().containsIgnoreCase('DELETE')) {
+        if (this.triggerContext.name().containsIgnoreCase('_DELETE')) {
             return triggerOld.isEmpty();
         }
         return triggerNew.isEmpty();

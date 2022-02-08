@@ -19,7 +19,7 @@ public without sharing class TriggerFactory {
         }
 
         for (TriggerHandlerExtension handler : handlers) {
-            execute(handler, handler.triggerContext?.name(), handler.triggerNew, handler.triggerOldMap);
+            execute(handler);
         }
     }
 
@@ -29,12 +29,12 @@ public without sharing class TriggerFactory {
      * @param  handler The implementation of the Trigger Handler.
      */
     @TestVisible
-    private static void execute(TriggerHandlerExtension handler, String triggerOperation, List<SObject> triggerNew, Map<Id, SObject> triggerOldMap) {
+    private static void execute(TriggerHandlerExtension handler) {
         if (handler.isDisabled() || handler.hasNoRecordsToProcess()) {
             return;
         }
         //Split the operationtype (for example AFTER_INSERT) into its two pieces to determine what we need.
-        List<String> operations = triggerOperation.split('_');
+        List<String> operations = handler.triggerContext.name().split('_');
         Boolean isBefore = operations[0] == 'BEFORE';
         String dmlOperation = operations[1];
 
@@ -45,18 +45,18 @@ public without sharing class TriggerFactory {
 
             switch on dmlOperation {
                 when 'DELETE' {
-                    for (SObject obj : triggerOldMap.values()) {
+                    for (SObject obj : handler.triggerOldMap.values()) {
                         handler.beforeDelete(obj);
                     }
                 }
                 when 'INSERT' {
-                    for (SObject obj : triggerNew) {
+                    for (SObject obj : handler.triggerNew) {
                         handler.beforeInsert(obj);
                     }
                 }
                 when 'UPDATE' {
-                    for (SObject obj : triggerNew) {
-                        handler.beforeUpdate(triggerOldMap.get(obj.Id), obj);
+                    for (SObject obj : handler.triggerNew) {
+                        handler.beforeUpdate(handler.triggerOldMap.get(obj.Id), obj);
                     }
                 }
             }
@@ -66,22 +66,22 @@ public without sharing class TriggerFactory {
 
             switch on dmlOperation {
                 when 'DELETE' {
-                    for (SObject obj : triggerOldMap.values()) {
+                    for (SObject obj : handler.triggerOldMap.values()) {
                         handler.afterDelete(obj);
                     }
                 }
                 when 'INSERT' {
-                    for (SObject obj : triggerNew) {
+                    for (SObject obj : handler.triggerNew) {
                         handler.afterInsert(obj);
                     }
                 }
                 when 'UPDATE' {
-                    for (SObject obj : triggerNew) {
-                        handler.afterUpdate(triggerOldMap.get(obj.Id), obj);
+                    for (SObject obj : handler.triggerNew) {
+                        handler.afterUpdate(handler.triggerOldMap.get(obj.Id), obj);
                     }
                 }
                 when 'UNDELETE' {
-                    for (SObject obj : triggerNew) {
+                    for (SObject obj : handler.triggerNew) {
                         handler.afterUndelete(obj);
                     }
                 }
