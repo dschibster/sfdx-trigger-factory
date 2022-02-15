@@ -1,0 +1,24 @@
+site_name: SFDX Trigger Factory Framework
+repo_url: https://github.com/dschibster/sfdx-trigger-factory
+repo_name: dschibster/sfdx-trigger-factory
+edit_uri: ""
+
+nav:
+    - Introduction: 'index.md'
+    - 'installation.md'
+
+theme:
+  name: material
+
+  palette: 
+    scheme: slate
+    primary: deep orange
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+  
