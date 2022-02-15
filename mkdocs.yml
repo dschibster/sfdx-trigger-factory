@@ -6,6 +6,7 @@ edit_uri: ""
 nav:
     - Introduction: 'index.md'
     - 'installation.md'
+    - 'testpage.md'
 
 theme:
   name: material
