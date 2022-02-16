@@ -24,13 +24,13 @@ Commit is finalized only after all of these actions have been executed.
 ## Multiple Handlers
 This process looks like this across more than one Trigger Handler:
 
-* BEFORE CONTEXT
+- BEFORE CONTEXT
   
   * Trigger Handler 1: BEFORE CONTEXT
   * Trigger Handler 2: BEFORE CONTEXT
   * Trigger Handler 3: BEFORE CONTEXT
 
-* AFTER CONTEXT
+- AFTER CONTEXT
 
   * Trigger Handler 1: AFTER CONTEXT
   * Trigger Handler 2: AFTER CONTEXT
