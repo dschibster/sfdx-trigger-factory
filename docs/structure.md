@@ -10,7 +10,7 @@ public class OpportunityHandler extends TriggerHandlerExtension{
 
     public override beforeUpdate(SObject oldSObj, SObject newSObj){
         Opportunity oldOpp = (Opportunity) oldSObj;
-        Opportunity newOpp = (Opportuntiy) newOpp;
+        Opportunity newOpp = (Opportunity) newSObj;
         setCloseDateForWonOpp(oldOpp, newOpp);
     }
 
