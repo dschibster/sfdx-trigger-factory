@@ -5,8 +5,12 @@ edit_uri: ""
 
 nav:
     - Introduction: 'index.md'
+    - 'why.md'
     - 'installation.md'
-    - 'testpage.md'
+    - 'features.md'
+    - 'use.md'
+    - 'structure.md'
+   
 
 theme:
   name: material
