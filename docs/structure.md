@@ -44,7 +44,7 @@ public class OpportunityHandler extends TriggerHandlerExtension{
 
     public override beforeUpdate(SObject oldSObj, SObject newSObj){
         Opportunity oldOpp = (Opportunity) oldSObj;
-        Opportunity newOpp = (Opportuntiy) newOpp;
+        Opportunity newOpp = (Opportunity) newSObj;
         helper.setCloseDateForWonOpp(oldOpp, newOpp);
     }
     
@@ -72,14 +72,14 @@ public class OpportunityHandler extends TriggerHandlerExtension{
 
     public override beforeUpdate(SObject oldSObj, SObject newSObj){
         Opportunity oldOpp = (Opportunity) oldSObj;
-        Opportunity newOpp = (Opportuntiy) newOpp;
+        Opportunity newOpp = (Opportunity) newSObj;
         new OpportunitySetFieldsForClosedWon().run(oldOpp, newOpp);
         //This class would only set fields on the triggering records, not requiring the cache at all.
     }
 
-    public override beforeUpdate(SObject oldSObj, SObject newSObj){
+    public override afterUpdate(SObject oldSObj, SObject newSObj){
         Opportunity oldOpp = (Opportunity) oldSObj;
-        Opportunity newOpp = (Opportuntiy) newOpp;
+        Opportunity newOpp = (Opportunity) newSObj;
         new OpportunityAfterSalesActivities(cache).run(oldOpp, newOpp);
         //This class would access data in cache where needed to create new records and update existing ones. 
         //This in turn would be handled with a Unit of Work here.

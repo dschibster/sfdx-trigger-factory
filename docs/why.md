@@ -19,6 +19,7 @@ Alternatively, the two methods can also house bulk logic. This can be useful for
 
 ### Processing
 Processing happens on a per-record basis. This means that the following methods:
+
 * `beforeInsert`
 * `afterInsert`
 * `beforeUpdate`
@@ -27,7 +28,7 @@ Processing happens on a per-record basis. This means that the following methods:
 * `afterDelete`
 * `afterUndelete`
 
-Are called separately **for each record**. With this in mind all bulkification is taken out of your hands here - you only need to worry about creating business logic for a single record. Additionally, it's easy to selectively add an Error message to a single record in a Trigger Context.
+are called separately **for each record**. With this in mind all bulkification is taken out of your hands here - you only need to worry about creating business logic for a single record. Additionally, it's easy to selectively add an Error message to a single record in a Trigger Context.
 
 This style also enforces that we **absolutely do not use SOQL or DML** in these methods. Instead we add records into collections that should later be updated / inserted / deleted.
 
