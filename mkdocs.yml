@@ -10,7 +10,6 @@ nav:
     - 'features.md'
     - 'use.md'
     - 'structure.md'
-   
 
 theme:
   name: material
