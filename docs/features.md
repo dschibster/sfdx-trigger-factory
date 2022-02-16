@@ -71,7 +71,7 @@ Adjusting the above example, it could look like this:
 
 This Opp Handler would run after `OpportunityHandler` because the `OrderOfExecution__c` is lower. It would also only contain records that have the correct Record Type Id.
 
-### Store Database Operations directly in your Handler
+## Store Database Operations directly in your Handler
 Out of the box, this framework brings you four lists that you can leverage to collect database operations instead of calling DML all at once:
 
 * `lstUpdate`
