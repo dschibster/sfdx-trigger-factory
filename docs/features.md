@@ -59,9 +59,9 @@ Record Types often serve vastly different business uses, and standard trigger lo
 Adjusting the above example, it could look like this:
 ```json
 {
-    "Label":"Exiting Business Opportunity Handler",
-    "DeveloperName":"ExitingBusinessOppHandler",
-    "ClassName__c":"ExitingBusinessOppHandler",
+    "Label":"Existing Business Opportunity Handler",
+    "DeveloperName":"ExistingBusinessOppHandler",
+    "ClassName__c":"ExistingBusinessOppHandler",
     "SObjectName__c":"Opportunity",
     "OrderOfExecution__c":2,
     "IsDisabled__c":false,
