@@ -24,6 +24,9 @@ public virtual without sharing class TriggerHandlerExtension {
         if (Trigger.isExecuting) {
             setSObjectType(Trigger.isDelete ? Trigger.old.getSObjectType() : Trigger.new.getSObjectType());
             this.isDisabled = isDisabled();
+            if(isDisabled){
+                return;
+            }
             //filter record type here?
             fillTriggerCollections(Trigger.new, Trigger.newMap, Trigger.old, Trigger.oldMap);
             if (TriggerMapping.getInstance().recordTypeFilter.containsKey(getHandlerName())) {

@@ -62,6 +62,7 @@ private class TriggerHandlerExtensionTest {
             TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
             handlerExtension.sObjType = Account.SObjectType;
             handlerExtension.isDisabled = handlerExtension.isDisabled();
+
             // check if DML Lists are initialized
             System.assert(handlerExtension.lstInsert != null, 'lstInsert is NULL');
             System.assert(handlerExtension.lstUpsert != null, 'lstUpsert is NULL');
@@ -540,6 +541,37 @@ private class TriggerHandlerExtensionTest {
         update acc;
         System.assert(calledHandlers.contains('BusinessAccountHandler'), 'Business Account Handler was not called');
         System.assert(!calledHandlers.contains('PersonAccountHandler'), 'beforeUpdate Method for Person Account Handler was called for Business Account');
+
+        //The last two checks are done mostly for coverage, as the two examples make it clear that the filter is working.
+        delete acc;
+        undelete acc;
+    }
+    
+    @isTest
+    static void testCollectionsAreNotFilteredWhenHandlerDisabled() {
+        
+        TriggerSettings__c newSettingForUser = new TriggerSettings__c(SetupOwnerId = UserInfo.getUserId(), DisabledObjects__c = 'Account');
+        insert NewSettingForUser;
+
+        //First we need to make sure that the correct Record Type Ids are in use, as these will differ on new Scratch Orgs.
+        Id personAccountRecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Person_Account').getRecordTypeId();
+        Id businessAccountRecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Business_Account').getRecordTypeId();
+
+        TriggerMapping.getInstance().recordTypeFilter.put('PersonAccountHandler', new Set<Id>(new List<Id>{ personAccountRecordTypeId }));
+        TriggerMapping.getInstance().recordTypeFilter.put('BusinessAccountHandler', new Set<Id>(new List<Id>{ businessAccountRecordTypeId }));
+
+        //Now we can create two Accounts and check that they are only calling the respective Trigger Handler function
+
+        Account acc = new Account(Name = 'Test Person Account');
+        acc.put('RecordTypeId', personAccountRecordTypeId); //Dynamic Apex here to resolve dependency on the Record Types being deployed after the the Test Class.
+        insert acc;
+        System.assert(!calledHandlers.contains('PersonAccountHandler'), 'Trigger Handler should have been disabled (person account)');
+
+        //When the Account is updated, only the new Record Type is relevant.
+        acc.put('RecordTypeId', businessAccountRecordTypeId);
+        calledHandlers = new Set<String>();
+        update acc;
+        System.assert(!calledHandlers.contains('BusinessAccountHandler'), 'Trigger Handler should have been disabled (business account)');
 
         //The last two checks are done mostly for coverage, as the two examples make it clear that the filter is working.
         delete acc;

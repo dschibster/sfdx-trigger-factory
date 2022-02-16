@@ -4,4 +4,4 @@ The SFDX Trigger Factory Framework is the trigger pattern in use in most organiz
 
 Additonally, the trigger factory works off of Custom Metadata to fire its triggers, which means that your development teams can work agnostically from each other, e.g. for different Record Types for each object, enabling package-based development without dependency issues.
 
-See in the sidebar this documentation on what this framework can and can't do, and how to use it to the fullest.
+See in the sidebar of this documentation on what this framework can and can't do, and how to use it to the fullest.
