@@ -3,12 +3,12 @@
 
 This assumes that all contexts are referenced in the Apex Trigger that calls `executeTriggerHandlers`.
 * Starting Point: DML Statement is fired
-  * **BEFORE Context**
+  * **BEFORE CONTEXT**
     * Trigger Handler is instantiated once, constructor is called
     * `bulkBefore()` is called
     * `beforeUpdate(), beforeInsert(), or beforeDelete()` is called
     * `andFinally()` is called
-  * **AFTER Context**
+  * **AFTER CONTEXT**
     * Trigger Handler is instantiated another time, constructor is called again
     * `bulkAfter()` is called
     * `afterUpdate(), afterInsert(), or afterDelete()` is called
