@@ -9,6 +9,7 @@ nav:
     - 'installation.md'
     - 'features.md'
     - 'use.md'
+    - 'order.md'
     - 'structure.md'
 
 theme:
