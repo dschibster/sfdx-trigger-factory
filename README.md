@@ -3,7 +3,7 @@
 
 # Installation
 <div>
-<span><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijYXAAY">
+<span><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijd4AAA">
   <img alt="Deploy to Salesforce"
        src="https://github.com/dschibster/sfdx-trigger-factory/blob/master/resources/button_install-unlocked-package.png" >
 </a>
@@ -16,7 +16,7 @@
 <div>
 For your Sandbox:
   <div><span>
-    <a href="https://test.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijYXAAY">
+    <a href="https://test.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijd4AAA">
   <img alt="Deploy to Salesforce"
        src="https://github.com/dschibster/ms-triggerframework/blob/master/resources/button_install-unlocked-package.png">
 </a></span><div>
