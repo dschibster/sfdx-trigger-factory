@@ -28,7 +28,9 @@ public with sharing class TriggerFactoryTest {
         Map<Id, Lead> leadMap = new Map<Id, Lead>(leadList);
 
         handler.fillTriggerCollections(leadList, new Map<Id, Lead>(leadList), null, null);
+        handler.setSObjectType(Lead.SObjectType);
         handler.triggerContext = TriggerOperation.BEFORE_INSERT;
+        handler.hasNoRecordsToProcess();
         TriggerFactory.execute(handler);
         handler.triggerContext = TriggerOperation.AFTER_INSERT;
         TriggerFactory.execute(handler);
@@ -37,6 +39,7 @@ public with sharing class TriggerFactoryTest {
 
         handler.fillTriggerCollections(null, null, leadList, new Map<Id, Lead>(leadList));
         handler.triggerContext = TriggerOperation.BEFORE_DELETE;
+        handler.hasNoRecordsToProcess();
         TriggerFactory.execute(handler);
         handler.triggerContext = TriggerOperation.AFTER_DELETE;
         TriggerFactory.execute(handler);
