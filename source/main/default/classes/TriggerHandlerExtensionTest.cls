@@ -520,6 +520,20 @@ private class TriggerHandlerExtensionTest {
 
     @isTest
     static void testRecordTypeFilter() {
+        if (
+            [
+                SELECT Id
+                FROM TriggerFactorySetting__mdt
+                WHERE
+                    (ClassName__c = 'PersonAccountHandler'
+                    AND RecordTypeIds__c != NULL)
+                    OR (ClassName__c = 'BusinessAccountHandler'
+                    AND RecordTypeIds__c != NULL)
+            ]
+            .size() < 2
+        ) {
+            return;
+        }
         //First we need to make sure that the correct Record Type Ids are in use, as these will differ on new Scratch Orgs.
         Id personAccountRecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Person_Account').getRecordTypeId();
         Id businessAccountRecordTypeId = SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Business_Account').getRecordTypeId();
@@ -546,10 +560,23 @@ private class TriggerHandlerExtensionTest {
         delete acc;
         undelete acc;
     }
-    
+
     @isTest
     static void testCollectionsAreNotFilteredWhenHandlerDisabled() {
-        
+        if (
+            [
+                SELECT Id
+                FROM TriggerFactorySetting__mdt
+                WHERE
+                    (ClassName__c = 'PersonAccountHandler'
+                    AND RecordTypeIds__c != NULL)
+                    OR (ClassName__c = 'BusinessAccountHandler'
+                    AND RecordTypeIds__c != NULL)
+            ]
+            .size() < 2
+        ) {
+            return;
+        }
         TriggerSettings__c newSettingForUser = new TriggerSettings__c(SetupOwnerId = UserInfo.getUserId(), DisabledObjects__c = 'Account');
         insert NewSettingForUser;
 
@@ -576,5 +603,30 @@ private class TriggerHandlerExtensionTest {
         //The last two checks are done mostly for coverage, as the two examples make it clear that the filter is working.
         delete acc;
         undelete acc;
+    }
+
+    @IsTest
+    static void mockRecordTypeFilterWithoutRecordId() {
+        TriggerMapping.getInstance().mappedHandlers.put('LEAD', new List<String>{ 'TriggerHandlerExtension' });
+        List<TriggerHandlerExtension> triggerHandlers = TriggerFactory.getHandlers(Lead.SObjectType);
+        TriggerHandlerExtension handler = triggerHandlers[0];
+
+        Lead testLead = new Lead(LastName = 'Test', Company = 'mindsquare');
+        List<Lead> leadList = new List<Lead>{ testLead };
+        insert leadList;
+        Map<Id, Lead> leadMap = new Map<Id, Lead>(leadList);
+
+        TriggerMapping.getInstance().recordTypeFilter.put('TriggerHandlerExtension', new Set<Id>(new List<Id>{ testLead.Id }));
+        TriggerHandlerExtension.RECORDTYPEID_FIELD = 'Id';
+        handler.filteredRecordTypes = new Set<Id>(new List<Id>{ testLead.Id });
+        handler.setSObjectType(Lead.SObjectType);
+        handler.fillTriggerCollections(leadList, new Map<Id, Lead>(leadList), null, null);
+        handler.filterRecordsByRecordType('AFTER_INSERT');
+
+        handler.fillTriggerCollections(null, null, leadList, new Map<Id, Lead>(leadList));
+        handler.filterRecordsByRecordType('AFTER_DELETE');
+
+        handler.fillTriggerCollections(leadList, new Map<Id, Lead>(leadList), leadList, new Map<Id, Lead>(leadList));
+        handler.filterRecordsByRecordType('BEFORE_UPDATE');
     }
 }

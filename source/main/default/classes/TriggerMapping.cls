@@ -3,6 +3,22 @@ public without sharing class TriggerMapping {
     public Map<String, List<String>> mappedHandlers;
     public Map<String, Set<Id>> recordTypeFilter;
 
+    @TestVisible
+    static List<TriggerFactorySetting__mdt> triggerFactorySettings {
+        get {
+            if (triggerFactorySettings == null) {
+                triggerFactorySettings = [
+                    SELECT SObjectName__c, ClassName__c, RecordTypeIds__c
+                    FROM TriggerFactorySetting__mdt
+                    WHERE IsDisabled__c = FALSE
+                    ORDER BY SObjectName__c, OrderOfExecution__c
+                ];
+            }
+            return triggerFactorySettings;
+        }
+        set;
+    }
+
     /**
      * @description Single Design Pattern method for retrieval of Trigger Mappings
      * Retrieves Trigger Factory Settings and groups the Trigger Handlers to execute based on the Object name and their Order of Execution.
@@ -20,12 +36,7 @@ public without sharing class TriggerMapping {
     private void load() {
         mappedHandlers = new Map<String, List<String>>();
         recordTypeFilter = new Map<String, Set<Id>>();
-        for (TriggerFactorySetting__mdt setting : [
-            SELECT SObjectName__c, ClassName__c, RecordTypeIds__c
-            FROM TriggerFactorySetting__mdt
-            WHERE IsDisabled__c = FALSE
-            ORDER BY SObjectName__c, OrderOfExecution__c
-        ]) {
+        for (TriggerFactorySetting__mdt setting : triggerFactorySettings) {
             if (!mappedHandlers.containsKey(setting.SObjectName__c.toUpperCase())) {
                 mappedHandlers.put(setting.SObjectName__c.toUpperCase(), new List<String>());
             }

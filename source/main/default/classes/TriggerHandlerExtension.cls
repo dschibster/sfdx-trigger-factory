@@ -8,12 +8,16 @@ public virtual without sharing class TriggerHandlerExtension {
     public static Set<String> disabledClasses = new Set<String>();
 
     @TestVisible
+    private static String RECORDTYPEID_FIELD = 'RecordTypeId';
+
+    @TestVisible
     private static Map<String, LoopCount> loopCountMap;
 
     public List<SObject> triggerNew = new List<SObject>();
     public Map<Id, SObject> triggerNewMap = new Map<Id, SObject>();
     public List<SObject> triggerOld = new List<SObject>();
     public Map<Id, SObject> triggerOldMap = new Map<Id, SObject>();
+    @TestVisible
     private Set<Id> filteredRecordTypes;
 
     static {
@@ -24,7 +28,7 @@ public virtual without sharing class TriggerHandlerExtension {
         if (Trigger.isExecuting) {
             setSObjectType(Trigger.isDelete ? Trigger.old.getSObjectType() : Trigger.new.getSObjectType());
             this.isDisabled = isDisabled();
-            if(isDisabled){
+            if (isDisabled) {
                 return;
             }
             //filter record type here?
@@ -55,13 +59,8 @@ public virtual without sharing class TriggerHandlerExtension {
         this.triggerOldMap = oldMap;
     }
 
+    @TestVisible
     private void filterRecordsByRecordType(String triggerOperation) {
-        Set<Id> recordTypeIds = TriggerMapping.getInstance().recordTypeFilter.get(getHandlerName());
-        List<SObject> newListFiltered = new List<SObject>();
-        Map<Id, SObject> newMapFiltered = new Map<Id, SObject>();
-        List<SObject> oldListFiltered = new List<SObject>();
-        Map<Id, SObject> oldMapFiltered = new Map<Id, SObject>();
-
         List<String> operations = triggerOperation.split('_');
 
         switch on operations[1] {
@@ -82,7 +81,7 @@ public virtual without sharing class TriggerHandlerExtension {
         Map<Id, SObject> oldMapNew = new Map<Id, SObject>();
 
         for (SObject sobj : triggerNew) {
-            if (filteredRecordTypes.contains((Id) sobj.get('RecordTypeId'))) {
+            if (filteredRecordTypes.contains((Id) sobj.get(RECORDTYPEID_FIELD))) {
                 newMapNew.put(sobj.Id, sobj);
                 oldMapNew.put(sobj.Id, triggerOldMap.get(sobj.Id));
             }
@@ -99,7 +98,7 @@ public virtual without sharing class TriggerHandlerExtension {
         Map<Id, SObject> newMapNew = new Map<Id, SObject>();
 
         for (SObject sobj : triggerNew) {
-            if (filteredRecordTypes.contains((Id) sobj.get('RecordTypeId'))) {
+            if (filteredRecordTypes.contains((Id) sobj.get(RECORDTYPEID_FIELD))) {
                 newListNew.add(sobj);
                 if (sobj.Id != null) {
                     newMapNew.put(sobj.Id, sobj);
@@ -116,7 +115,7 @@ public virtual without sharing class TriggerHandlerExtension {
         Map<Id, SObject> oldMapNew = new Map<Id, SObject>();
 
         for (SObject sobj : triggerOld) {
-            if (filteredRecordTypes.contains((Id) sobj.get('RecordTypeId'))) {
+            if (filteredRecordTypes.contains((Id) sobj.get(RECORDTYPEID_FIELD))) {
                 oldListNew.add(sobj);
                 oldMapNew.put(sobj.Id, sobj);
             }
