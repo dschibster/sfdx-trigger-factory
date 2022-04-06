@@ -1,29 +1,29 @@
 {
-    "packageDirectories": [
-        {
-            "path": "source",
-            "default": true,
-            "package": "sfdx-trigger-factory",
-            "versionName": "ver. 1.2.3",
-            "versionNumber": "1.2.3.0",
-            "unpackagedMetadata": {
-                "path": "unmanaged"
-            }
-        },
-        {
-            "path": "unmanaged"
-        }
-    ],
-    "namespace": "",
-    "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "53.0",
-    "packageAliases": {
-        "sfdx-trigger-factory": "0Ho09000000sY6qCAE",
-        "sfdx-trigger-factory@1.0.0.0": "04t09000000ibshAAA",
-        "sfdx-trigger-factory@1.1.0-0": "04t09000000ijXKAAY",
-        "sfdx-trigger-factory@1.2.0-0": "04t09000000ijXeAAI",
-        "sfdx-trigger-factory@1.2.1-0": "04t09000000ijYXAAY",
-        "sfdx-trigger-factory@1.2.2-0": "04t09000000ijd4AAA",
-        "sfdx-trigger-factory@1.2.3-0": "04t09000000ijmgAAA"
+  "packageDirectories": [
+    {
+      "path": "source",
+      "default": true,
+      "package": "sfdx-trigger-factory",
+      "versionName": "ver. 1.2.4",
+      "versionNumber": "1.2.4.0",
+      "unpackagedMetadata": {
+        "path": "unmanaged"
+      }
+    },
+    {
+      "path": "unmanaged"
     }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "53.0",
+  "packageAliases": {
+    "sfdx-trigger-factory": "0Ho09000000sY6qCAE",
+    "sfdx-trigger-factory@1.0.0.0": "04t09000000ibshAAA",
+    "sfdx-trigger-factory@1.1.0-0": "04t09000000ijXKAAY",
+    "sfdx-trigger-factory@1.2.0-0": "04t09000000ijXeAAI",
+    "sfdx-trigger-factory@1.2.1-0": "04t09000000ijYXAAY",
+    "sfdx-trigger-factory@1.2.2-0": "04t09000000ijd4AAA",
+    "sfdx-trigger-factory@1.2.3-0": "04t09000000ijmgAAA"
+  }
 }
