@@ -8,7 +8,7 @@ public without sharing class TriggerMapping {
         get {
             if (triggerFactorySettings == null) {
                 triggerFactorySettings = [
-                    SELECT SObjectName__c, ClassName__c, RecordTypeIds__c
+                    SELECT SObjectName__c, ClassName__c, RecordTypeIds__c, OrderOfExecution__c
                     FROM TriggerFactorySetting__mdt
                     WHERE IsDisabled__c = FALSE
                     ORDER BY SObjectName__c, OrderOfExecution__c ASC
