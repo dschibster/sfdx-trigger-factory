@@ -11,7 +11,7 @@ public without sharing class TriggerMapping {
                     SELECT SObjectName__c, ClassName__c, RecordTypeIds__c
                     FROM TriggerFactorySetting__mdt
                     WHERE IsDisabled__c = FALSE
-                    ORDER BY SObjectName__c, OrderOfExecution__c
+                    ORDER BY SObjectName__c, OrderOfExecution__c ASC
                 ];
             }
             return triggerFactorySettings;
