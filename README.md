@@ -7,7 +7,7 @@
 For more information about what the framework can and cannot do, head on over to the [documentation](https://dschibster.github.io/sfdx-trigger-factory)!
 # Installation
 <div>
-<span><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijmgAAA">
+<span><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijqOAAQ">
   <img alt="Deploy to Salesforce"
        src="https://github.com/dschibster/sfdx-trigger-factory/blob/master/resources/button_install-unlocked-package.png" >
 </a>
@@ -20,7 +20,7 @@ For more information about what the framework can and cannot do, head on over to
 <div>
 For your Sandbox:
   <div><span>
-    <a href="https://test.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijmgAAA">
+    <a href="https://test.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ijqOAAQ">
   <img alt="Deploy to Salesforce"
        src="https://github.com/dschibster/ms-triggerframework/blob/master/resources/button_install-unlocked-package.png">
 </a></span><div>
