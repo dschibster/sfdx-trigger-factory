@@ -8,17 +8,14 @@ public virtual without sharing class TriggerHandlerExtension {
     public static Set<String> disabledClasses = new Set<String>();
 
     @TestVisible
-    private static String RECORDTYPEID_FIELD = 'RecordTypeId';
-
-    @TestVisible
     private static Map<String, LoopCount> loopCountMap;
 
+    public TriggerCollection records;
     public List<SObject> triggerNew = new List<SObject>();
     public Map<Id, SObject> triggerNewMap = new Map<Id, SObject>();
     public List<SObject> triggerOld = new List<SObject>();
     public Map<Id, SObject> triggerOldMap = new Map<Id, SObject>();
-    @TestVisible
-    private Set<Id> filteredRecordTypes;
+    public Set<Id> filteredRecordTypes;
 
     static {
         loopCountMap = new Map<String, LoopCount>();
@@ -32,11 +29,6 @@ public virtual without sharing class TriggerHandlerExtension {
                 return;
             }
             //filter record type here?
-            fillTriggerCollections(Trigger.new, Trigger.newMap, Trigger.old, Trigger.oldMap);
-            if (TriggerMapping.getInstance().recordTypeFilter.containsKey(getHandlerName())) {
-                filteredRecordTypes = TriggerMapping.getInstance().recordTypeFilter.get(getHandlerName());
-                filterRecordsByRecordType(Trigger.operationType.name());
-            }
             if (Trigger.isBefore) {
                 addToLoopCount();
             }
@@ -52,77 +44,45 @@ public virtual without sharing class TriggerHandlerExtension {
         this.sObjType = sobjType;
     }
 
-    public void fillTriggerCollections(List<SObject> newList, Map<Id, SObject> newMap, List<SObject> oldList, Map<Id, SObject> oldMap) {
-        this.triggerNew = newList;
-        this.triggerNewMap = newMap;
-        this.triggerOld = oldList;
-        this.triggerOldMap = oldMap;
-    }
-
-    @TestVisible
-    private void filterRecordsByRecordType(String triggerOperation) {
-        List<String> operations = triggerOperation.split('_');
-
-        switch on operations[1] {
-            when 'INSERT', 'UNDELETE' {
-                filterTriggerListsInsertUndelete();
+    public void fillTriggerCollections() {
+        String operation = triggerContext.name().split('_')[1];
+        Boolean isUpdate = operation == 'UPDATE';
+        if (filteredRecordTypes == null) {
+            this.triggerNew = records.allNewRecords;
+            if (triggerNew?.size() > 0 && triggerNew.get(0).Id != null) {
+                this.triggerNewMap = new Map<Id, SObject>(triggerNew);
             }
-            when 'UPDATE' {
-                filterTriggerListsUpdate();
+            this.triggerOld = records.allOldRecords;
+            if (triggerOld != null) {
+                this.triggerOldMap = new Map<Id, SObject>(triggerOld);
             }
-            when 'DELETE' {
-                filterTriggerListsDelete();
-            }
+            return;
         }
-    }
 
-    private void filterTriggerListsUpdate() {
-        Map<Id, SObject> newMapNew = new Map<Id, SObject>();
-        Map<Id, SObject> oldMapNew = new Map<Id, SObject>();
+        this.triggerNew = new List<SObject>();
+        this.triggerNewMap = new Map<Id, Sobject>();
+        this.triggerOld = new List<SObject>();
+        this.triggerOldMap = new Map<Id, SObject>();
+        Map<String, List<SObject>> operationToCollection = new Map<String, List<SObject>>{
+            'INSERT' => this.triggerNew,
+            'DELETE' => this.triggerOld,
+            'UPDATE' => this.triggerNew,
+            'UNDELETE' => this.triggerNew
+        };
 
-        for (SObject sobj : triggerNew) {
-            if (filteredRecordTypes.contains((Id) sobj.get(RECORDTYPEID_FIELD))) {
-                newMapNew.put(sobj.Id, sobj);
-                oldMapNew.put(sobj.Id, triggerOldMap.get(sobj.Id));
+        for (Id recordTypeId : filteredRecordTypes) {
+            operationToCollection.get(operation).addAll(records.fetchRecords(operation, recordTypeId));
+            if (isUpdate) {
+                this.triggerOld.addAll(records.fetchOldRecords(recordTypeId));
             }
         }
 
-        triggerNew = newMapNew.values();
-        triggerNewMap = newMapNew;
-        triggerOld = oldMapNew.values();
-        triggerOldMap = oldMapNew;
-    }
-
-    private void filterTriggerListsInsertUndelete() {
-        List<SObject> newListNew = new List<SObject>();
-        Map<Id, SObject> newMapNew = new Map<Id, SObject>();
-
-        for (SObject sobj : triggerNew) {
-            if (filteredRecordTypes.contains((Id) sobj.get(RECORDTYPEID_FIELD))) {
-                newListNew.add(sobj);
-                if (sobj.Id != null) {
-                    newMapNew.put(sobj.Id, sobj);
-                }
-            }
+        if (triggerNew?.size() > 0 && triggerNew.get(0).Id != null) {
+            this.triggerNewMap = new Map<Id, SObject>(this.triggerNew);
         }
-
-        triggerNew = newListNew;
-        triggerNewMap = newMapNew;
-    }
-
-    private void filterTriggerListsDelete() {
-        List<SObject> oldListNew = new List<SObject>();
-        Map<Id, SObject> oldMapNew = new Map<Id, SObject>();
-
-        for (SObject sobj : triggerOld) {
-            if (filteredRecordTypes.contains((Id) sobj.get(RECORDTYPEID_FIELD))) {
-                oldListNew.add(sobj);
-                oldMapNew.put(sobj.Id, sobj);
-            }
+        if (!triggerOld.isEmpty()) {
+            this.triggerOldMap = new Map<Id, SObject>(triggerOld);
         }
-
-        triggerOld = oldListNew;
-        triggerOldMap = oldMapNew;
     }
 
     public Boolean hasNoRecordsToProcess() {
@@ -244,11 +204,7 @@ public virtual without sharing class TriggerHandlerExtension {
     public virtual Boolean isDisabled() {
         TriggerSettings ts = TriggerSettings.getInstance();
 
-        return ts.isAllTriggersDisabled() ||
-            ts.isDisabledBySObjectType(this.sObjType) ||
-            disabledObjects.contains(this.sObjType) ||
-            ts.isDisabledByClassName(getHandlerName()) ||
-            disabledClasses.contains(getHandlerName().toUpperCase());
+        return ts.isDisabledByClassName(getHandlerName()) || disabledClasses.contains(getHandlerName().toUpperCase());
     }
 
     /**
