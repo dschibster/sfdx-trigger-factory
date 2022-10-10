@@ -7,7 +7,9 @@ echo "sfdx force:package:version:create -p PACKAGE_ID -f config/project-scratch-
 
 PACKAGE_ID=$( jq -r 'first(.packageAliases[])' sfdx-project.json )
 
-sfdx force:package:version:create -p $PACKAGE_ID -f config/project-scratch-def.json -x -v devhub -c --json -w 50 > result.json
+echo "Package Id: $PACKAGE_ID"
+
+sfdx force:package:version:create -p $PACKAGE_ID -f config/project-scratch-def.json -x -v devhub -c --json -w 50 > result.json >&2 echo "error"
 
 cat result.json | jq -r '.result.SubscriberPackageVersionId' > packgeversionid.txt
 
