@@ -9,13 +9,8 @@ PACKAGE_ID=$( jq -r 'first(.packageAliases[])' sfdx-project.json )
 
 echo "Package Id: $PACKAGE_ID"
 
-if [[ $( sfdx force:package:version:create -p $PACKAGE_ID -f config/project-scratch-def.json -x -v devhub -c --json -w 50 > result.json )$? ]]
-then
-  echo "successfully created package version"
-else
-  cat result.json
-  exit 1
-fi
+$( sfdx force:package:version:create -p $PACKAGE_ID -f config/project-scratch-def.json -x -v devhub -c --json -w 50 | tee result.json
+
 
 cat result.json | jq -r '.result.SubscriberPackageVersionId' > packgeversionid.txt
 
