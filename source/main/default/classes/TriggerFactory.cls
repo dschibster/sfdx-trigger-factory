@@ -48,7 +48,6 @@ public without sharing class TriggerFactory {
      */
     @TestVisible
     private static void execute(TriggerHandlerExtension handler) {
-        handler.fillTriggerCollections();
         if (handler.isDisabled() || handler.hasNoRecordsToProcess()) {
             return;
         }
