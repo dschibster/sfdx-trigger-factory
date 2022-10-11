@@ -3,13 +3,13 @@ set -euo pipefail
 
 echo "Starting script to create new package version"
 
-echo "sfdx force:package:version:create -p PACKAGE_ID -f config/project-scratch-def.json -x -v devhub -c --json -w 50"
+echo "sfdx force:package:beta:version:create -p PACKAGE_ID -f config/project-scratch-def.json -x -v devhub -c --json -w 50 | tee result.json"
 
 PACKAGE_ID=$( jq -r 'first(.packageAliases[])' sfdx-project.json )
 
 echo "Package Id: $PACKAGE_ID"
 
-sfdx force:package:version:create -p $PACKAGE_ID -f config/project-scratch-def.json -x -v devhub -c --json -w 50 | tee result.json
+sfdx force:package:beta:version:create -p $PACKAGE_ID -f config/project-scratch-def.json -x -v devhub -c --json -w 50 | tee result.json
 
 
 cat result.json | jq -r '.result.SubscriberPackageVersionId' > packgeversionid.txt
