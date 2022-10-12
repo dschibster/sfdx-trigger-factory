@@ -1,7 +1,8 @@
 public without sharing class TriggerFactory {
     @TestVisible
     private static Boolean hasReachedErrorLog = false;
-
+    @TestVisible
+    private static Boolean disabledBeforeTriggering = false;
     /**
      * @description Retrieves Handlers from Trigger Factory Setting and executes them by Order of Execution
      * @author mindsquare AG
@@ -10,7 +11,17 @@ public without sharing class TriggerFactory {
      */
 
     public static void executeTriggerHandlers(Schema.SObjectType objType) {
-        List<TriggerHandlerExtension> handlers = getHandlers(objType);
+        if (
+            TriggerSettings.getInstance().isDisabledBySObjectType(objType) ||
+            TriggerSettings.getInstance().isAllTriggersDisabled() ||
+            TriggerHandlerExtension.disabledObjects.contains(objType)
+        ) {
+            disabledBeforeTriggering = true;
+            return;
+        }
+        Set<Id> recordTypeIds = new Set<Id>();
+
+        List<TriggerHandlerExtension> handlers = getHandlers(objType, recordTypeIds);
 
         if (handlers.size() == 0) {
             System.debug(LoggingLevel.ERROR, 'No Trigger Handler registered or all Triggers disabled for Object Type: ' + objType);
@@ -18,7 +29,14 @@ public without sharing class TriggerFactory {
             return;
         }
 
+        TriggerCollection collection = new TriggerCollection(Trigger.new, Trigger.old);
+        if (recordTypeIds.size() > 0) {
+            collection.filter(recordTypeIds, Trigger.operationType.name());
+        }
+
         for (TriggerHandlerExtension handler : handlers) {
+            handler.records = collection;
+            handler.fillTriggerCollections();
             execute(handler);
         }
     }
@@ -99,7 +117,7 @@ public without sharing class TriggerFactory {
      * @return A list of all Trigger Handlers of the currently calling Trigger's SObject Type.
      */
     @TestVisible
-    private static List<TriggerHandlerExtension> getHandlers(Schema.SObjectType objType) {
+    private static List<TriggerHandlerExtension> getHandlers(Schema.SObjectType objType, Set<Id> recordTypeIds) {
         List<TriggerHandlerExtension> handlers = new List<TriggerHandlerExtension>();
 
         String objectName = objType.getDescribe().getName().toUpperCase();
@@ -109,6 +127,10 @@ public without sharing class TriggerFactory {
                 TriggerHandlerExtension handler = (TriggerHandlerExtension) Type.forName(className).newInstance();
                 handler.handlerName = className;
                 handler.triggerContext = Trigger.operationType;
+                if (TriggerMapping.getInstance().recordTypeFilter.containsKey(className)) {
+                    handler.filteredRecordTypes = TriggerMapping.getInstance().recordTypeFilter.get(className);
+                    recordTypeIds.addAll(handler.filteredRecordTypes);
+                }
                 handlers.add(handler);
             }
         }

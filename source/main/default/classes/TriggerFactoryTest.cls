@@ -18,18 +18,21 @@ public with sharing class TriggerFactoryTest {
     static void executeDummyFactoryMethods() {
         //Dependency Inject into the Trigger Factory in order to have our methods run even though they are not called via Trigger
         TriggerMapping.getInstance().mappedHandlers.put('LEAD', new List<String>{ 'TriggerHandlerExtension' });
-        List<TriggerHandlerExtension> triggerHandlers = TriggerFactory.getHandlers(Lead.SObjectType);
+        List<TriggerHandlerExtension> triggerHandlers = TriggerFactory.getHandlers(Lead.SObjectType, new Set<Id>());
         TriggerHandlerExtension handler = triggerHandlers[0];
 
         //to inject into the triggerNew/triggerOld parameters.
         Lead testLead = new Lead(LastName = 'Test', Company = 'mindsquare');
         List<Lead> leadList = new List<Lead>{ testLead };
         insert leadList;
-        Map<Id, Lead> leadMap = new Map<Id, Lead>(leadList);
 
-        handler.fillTriggerCollections(leadList, new Map<Id, Lead>(leadList), null, null);
         handler.setSObjectType(Lead.SObjectType);
         handler.triggerContext = TriggerOperation.BEFORE_INSERT;
+
+        TriggerCollection collection = new TriggerCollection(leadList, null);
+        handler.records = collection;
+        handler.fillTriggerCollections();
+
         handler.hasNoRecordsToProcess();
         TriggerFactory.execute(handler);
         handler.triggerContext = TriggerOperation.AFTER_INSERT;
@@ -37,14 +40,18 @@ public with sharing class TriggerFactoryTest {
         handler.triggerContext = TriggerOperation.AFTER_UNDELETE;
         TriggerFactory.execute(handler);
 
-        handler.fillTriggerCollections(null, null, leadList, new Map<Id, Lead>(leadList));
+        collection = new TriggerCollection(null, leadList);
+        handler.records = collection;
+        handler.fillTriggerCollections();
         handler.triggerContext = TriggerOperation.BEFORE_DELETE;
         handler.hasNoRecordsToProcess();
         TriggerFactory.execute(handler);
         handler.triggerContext = TriggerOperation.AFTER_DELETE;
         TriggerFactory.execute(handler);
 
-        handler.fillTriggerCollections(leadList, new Map<Id, Lead>(leadList), leadList, new Map<Id, Lead>(leadList));
+        collection = new TriggerCollection(leadList, leadList);
+        handler.records = collection;
+        handler.fillTriggerCollections();
         handler.triggerContext = TriggerOperation.BEFORE_UPDATE;
         TriggerFactory.execute(handler);
         handler.triggerContext = TriggerOperation.AFTER_UPDATE;

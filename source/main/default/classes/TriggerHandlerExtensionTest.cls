@@ -6,16 +6,10 @@ private class TriggerHandlerExtensionTest {
     @isTest
     static void disabledInApex_Object_positive() {
         TriggerHandlerExtension.disableObject(Account.SObjectType);
-        TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
-        handlerExtension.sObjType = Account.SObjectType;
-        handlerExtension.isDisabled = handlerExtension.isDisabled();
+        TriggerFactory.executeTriggerHandlers(Account.SObjectType);
 
-        System.assert(handlerExtension.isDisabled, 'Object was not disabled');
-
-        TriggerHandlerExtension.enableObject(Account.SObjectType);
-        handlerExtension.isDisabled = handlerExtension.isDisabled();
-
-        System.assert(!handlerExtension.isDisabled, 'Object was not enabled after disabling');
+        // check if Trigger is disabled
+        System.assert(TriggerFactory.disabledBeforeTriggering, 'Object was not disabled');
     }
 
     @isTest
@@ -59,18 +53,10 @@ private class TriggerHandlerExtensionTest {
         System.assert(resultUserInsert.isSuccess(), 'Testuser insert has failed');
 
         System.runAs(objUser) {
-            TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
-            handlerExtension.sObjType = Account.SObjectType;
-            handlerExtension.isDisabled = handlerExtension.isDisabled();
-
-            // check if DML Lists are initialized
-            System.assert(handlerExtension.lstInsert != null, 'lstInsert is NULL');
-            System.assert(handlerExtension.lstUpsert != null, 'lstUpsert is NULL');
-            System.assert(handlerExtension.lstUpdate != null, 'lstUpdate is NULL');
-            System.assert(handlerExtension.lstDelete != null, 'lstDelete is NULL');
+            TriggerFactory.executeTriggerHandlers(Account.SObjectType);
 
             // check if Trigger is disabled
-            System.assert(handlerExtension.isDisabled, 'Trigger is enabled');
+            System.assert(TriggerFactory.disabledBeforeTriggering, 'Trigger is enabled');
         }
     }
 
@@ -138,17 +124,10 @@ private class TriggerHandlerExtensionTest {
             TriggerSettings__c newSettingForUser = new TriggerSettings__c(SetupOwnerId = objProfile.Id, DisabledObjects__c = 'Account');
             insert newSettingForUser;
 
-            TriggerHandlerExtension handlerExtension = new TriggerHandlerExtension();
-            handlerExtension.sObjType = Account.SObjectType;
-            handlerExtension.isDisabled = handlerExtension.isDisabled();
-            // check if DML Lists are initialized
-            System.assert(handlerExtension.lstInsert != null, 'lstInsert is NULL');
-            System.assert(handlerExtension.lstUpsert != null, 'lstUpsert is NULL');
-            System.assert(handlerExtension.lstUpdate != null, 'lstUpdate is NULL');
-            System.assert(handlerExtension.lstDelete != null, 'lstDelete is NULL');
+            TriggerFactory.executeTriggerHandlers(Account.SObjectType);
 
             // check if Trigger is disabled
-            System.assert(handlerExtension.isDisabled, 'Trigger is enabled');
+            System.assert(TriggerFactory.disabledBeforeTriggering, 'Trigger is enabled');
         }
     }
 
@@ -608,7 +587,7 @@ private class TriggerHandlerExtensionTest {
     @IsTest
     static void mockRecordTypeFilterWithoutRecordId() {
         TriggerMapping.getInstance().mappedHandlers.put('LEAD', new List<String>{ 'TriggerHandlerExtension' });
-        List<TriggerHandlerExtension> triggerHandlers = TriggerFactory.getHandlers(Lead.SObjectType);
+        List<TriggerHandlerExtension> triggerHandlers = TriggerFactory.getHandlers(Lead.SObjectType, new Set<Id>());
         TriggerHandlerExtension handler = triggerHandlers[0];
 
         Lead testLead = new Lead(LastName = 'Test', Company = 'mindsquare');
@@ -617,16 +596,27 @@ private class TriggerHandlerExtensionTest {
         Map<Id, Lead> leadMap = new Map<Id, Lead>(leadList);
 
         TriggerMapping.getInstance().recordTypeFilter.put('TriggerHandlerExtension', new Set<Id>(new List<Id>{ testLead.Id }));
-        TriggerHandlerExtension.RECORDTYPEID_FIELD = 'Id';
+        TriggerCollection.RECORDTYPEID_FIELD = 'Id';
         handler.filteredRecordTypes = new Set<Id>(new List<Id>{ testLead.Id });
         handler.setSObjectType(Lead.SObjectType);
-        handler.fillTriggerCollections(leadList, new Map<Id, Lead>(leadList), null, null);
-        handler.filterRecordsByRecordType('AFTER_INSERT');
+        //Setting up records for INSERT
+        TriggerCollection collection = new TriggerCollection(leadList, null);
+        collection.filter(handler.filteredRecordTypes, 'AFTER_INSERT');
+        handler.triggerContext = TriggerOperation.AFTER_INSERT;
+        handler.records = collection;
+        handler.fillTriggerCollections();
 
-        handler.fillTriggerCollections(null, null, leadList, new Map<Id, Lead>(leadList));
-        handler.filterRecordsByRecordType('AFTER_DELETE');
+        //Setting up records for DELETE
+        collection = new TriggerCollection(null, leadList);
+        collection.filter(handler.filteredRecordTypes, 'AFTER_DELETE');
+        handler.triggerContext = TriggerOperation.AFTER_DELETE;
+        handler.records = collection;
+        handler.fillTriggerCollections();
 
-        handler.fillTriggerCollections(leadList, new Map<Id, Lead>(leadList), leadList, new Map<Id, Lead>(leadList));
-        handler.filterRecordsByRecordType('BEFORE_UPDATE');
+        collection = new TriggerCollection(leadList, leadList);
+        collection.filter(handler.filteredRecordTypes, 'BEFORE_UPDATE');
+        handler.triggerContext = TriggerOperation.BEFORE_UPDATE;
+        handler.records = collection;
+        handler.fillTriggerCollections();
     }
 }

@@ -5,6 +5,8 @@
 # Salesforce cache
 .sfdx/
 .localdevserver/
+.sf/
+.vim-force/
 
 # LWC VSCode autocomplete
 **/lwc/jsconfig.json
