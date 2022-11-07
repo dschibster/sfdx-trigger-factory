@@ -619,4 +619,22 @@ private class TriggerHandlerExtensionTest {
         handler.records = collection;
         handler.fillTriggerCollections();
     }
+
+    @isTest
+    static void testPlatformEventsAreHandledWithoutErrors() {
+        if ([SELECT Id FROM TriggerFactorySetting__mdt WHERE ClassName__c = 'CPEHandler'].size() < 1) {
+            return;
+        }
+        Test.startTest();
+        sObject newPlatformEvent = Schema.getGlobalDescribe().get('CustomPlatformEvent__e').newSObject();
+        Exception e;
+        try {
+            EventBus.publish(newPlatformEvent);
+            Test.getEventBus().deliver();
+        } catch (Exception ex) {
+            e = ex;
+        }
+        Test.stopTest();
+        System.assertEquals(null, e, 'There was an exception in trying to handle the Trigger for Platform Events');
+    }
 }

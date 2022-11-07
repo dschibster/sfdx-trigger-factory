@@ -1,5 +1,6 @@
 public virtual without sharing class TriggerHandlerExtension {
     public Schema.sObjectType sObjType;
+    private Boolean isPlatformEvent;
     public Boolean isDisabled;
     public String handlerName;
     public TriggerOperation triggerContext;
@@ -42,6 +43,7 @@ public virtual without sharing class TriggerHandlerExtension {
 
     public void setSObjectType(SObjectType sobjType) {
         this.sObjType = sobjType;
+        this.isPlatformEvent = sobjType.getDescribe().getName().endsWith('__e');
     }
 
     public void fillTriggerCollections() {
@@ -49,6 +51,14 @@ public virtual without sharing class TriggerHandlerExtension {
         Boolean isUpdate = operation == 'UPDATE';
         if (filteredRecordTypes == null) {
             this.triggerNew = records.allNewRecords;
+            /*
+             * After this line, triggerNew will have all relevant records,
+             * as this is the only collection Custom Platform Events can use
+             * The rest will crash. Let's escape this here.
+             */
+            if (isPlatformEvent) {
+                return;
+            }
             if (triggerNew?.size() > 0 && triggerNew.get(0).Id != null) {
                 this.triggerNewMap = new Map<Id, SObject>(triggerNew);
             }
