@@ -1,0 +1,655 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.4.1">
+    
+    
+      
+        <title>Features - SFDX Trigger Factory Framework</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.69437709.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#ff6e42">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#features" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="SFDX Trigger Factory Framework" class="md-header__button md-logo" aria-label="SFDX Trigger Factory Framework" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SFDX Trigger Factory Framework
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Features
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dschibster/sfdx-trigger-factory" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    dschibster/sfdx-trigger-factory
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="SFDX Trigger Factory Framework" class="md-nav__button md-logo" aria-label="SFDX Trigger Factory Framework" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    SFDX Trigger Factory Framework
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dschibster/sfdx-trigger-factory" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    dschibster/sfdx-trigger-factory
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../why/" class="md-nav__link">
+        Why this Framework?
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Features
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Features
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#trigger-collections-delivered-to-your-class" class="md-nav__link">
+    Trigger collections delivered to your class
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-metadata-based-triggers" class="md-nav__link">
+    Custom Metadata Based Triggers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#temporarily-disable-your-triggers-in-settings-and-code" class="md-nav__link">
+    Temporarily Disable Your Triggers in Settings and Code
+  </a>
+  
+    <nav class="md-nav" aria-label="Temporarily Disable Your Triggers in Settings and Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-setting" class="md-nav__link">
+    Custom Setting
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex" class="md-nav__link">
+    Apex
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filter-your-records-before-the-handler-runs" class="md-nav__link">
+    Filter your Records before the Handler runs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#store-database-operations-directly-in-your-handler" class="md-nav__link">
+    Store Database Operations directly in your Handler
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control-recursion-wip" class="md-nav__link">
+    Control Recursion (WIP)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../use/" class="md-nav__link">
+        How to use
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../order/" class="md-nav__link">
+        Order of Execution
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../structure/" class="md-nav__link">
+        Structural Examples
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#trigger-collections-delivered-to-your-class" class="md-nav__link">
+    Trigger collections delivered to your class
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-metadata-based-triggers" class="md-nav__link">
+    Custom Metadata Based Triggers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#temporarily-disable-your-triggers-in-settings-and-code" class="md-nav__link">
+    Temporarily Disable Your Triggers in Settings and Code
+  </a>
+  
+    <nav class="md-nav" aria-label="Temporarily Disable Your Triggers in Settings and Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-setting" class="md-nav__link">
+    Custom Setting
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex" class="md-nav__link">
+    Apex
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filter-your-records-before-the-handler-runs" class="md-nav__link">
+    Filter your Records before the Handler runs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#store-database-operations-directly-in-your-handler" class="md-nav__link">
+    Store Database Operations directly in your Handler
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control-recursion-wip" class="md-nav__link">
+    Control Recursion (WIP)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="features">Features</h1>
+<p>The framework comes with a variety of features that you can leverage to your liking. </p>
+<h2 id="trigger-collections-delivered-to-your-class">Trigger collections delivered to your class</h2>
+<p>The virtual class <code>TriggerHandlerExtension</code> that is your Trigger Handler class base offers you the following variables:</p>
+<ul>
+<li><code>triggerNew</code></li>
+<li><code>triggerNewMap</code></li>
+<li><code>triggerOld</code></li>
+<li><code>triggerOldMap</code></li>
+</ul>
+<p>To use in your <code>bulkBefore</code>/<code>bulkAfter</code> calls (as they are already leveraged in the single-record methods). This makes it possible to mock a run of a trigger by simply filling in these collections before calling <code>TriggerFactory.execute()</code> with the handler object.</p>
+<p>If you want to create a manual run of the Trigger Handler without actually calling the Trigger (for example for unit testing), simply use the class method <code>fillTriggerCollections(newList, newMap, oldList, oldMap)</code>.</p>
+<p>In practice you may want to use the <code>triggerNew</code> list in your queries to create a Map, for example like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">public</span><span class="w"> </span><span class="n">override</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">bulkBefore</span><span class="p">(){</span><span class="w"></span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="n">mapIdToOppWithRelated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">Id</span><span class="p">,</span><span class="w"> </span><span class="n">Opportunity</span><span class="o">&gt;</span><span class="p">(</span><span class="w"></span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">        </span><span class="o">[</span><span class="w"></span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">            </span><span class="n">SELECT</span><span class="w">  </span><span class="n">Id</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">                    </span><span class="n">Account</span><span class="p">.</span><span class="na">Name</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">                    </span><span class="n">Account</span><span class="p">.</span><span class="na">ShippingCountry</span><span class="w"> </span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">            </span><span class="n">FROM</span><span class="w"> </span><span class="n">Opportunity</span><span class="w"> </span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">            </span><span class="n">WHERE</span><span class="w"> </span><span class="n">Id</span><span class="w"> </span><span class="n">IN</span><span class="w"> </span><span class="p">:</span><span class="n">triggerNew</span><span class="w"></span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="o">]</span><span class="w"></span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="p">);</span><span class="w"></span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<h2 id="custom-metadata-based-triggers">Custom Metadata Based Triggers</h2>
+<p>The <code>Trigger Factory Setting</code> Metadata Type prescribes the Objects, the Classes and the order of execution that the Handlers should run in. This is especially useful for very loaded objects, where we usually only require a fraction of the functionality depending on the type of record we are processing (ref. <a href="./#record-type-filtering">Record Type Filtering</a>).</p>
+<p>This also enables you to use SFDX Trigger Factory in a package-based development model where the Trigger Factory is a part of a larger package landscape. Packages can be developed independently from one another and only the Factory Setting is necessary for the factory package to recognize that a Trigger has to be executed. Therefore, the Apex Trigger is only required in one of the packages (preferably the one that contains the most dependencies). If your Object is package-exclusive - even easier! Just include both Apex Trigger and Factory Setting in your package.</p>
+<p>An example Trigger Factory Setting would look something like this:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nt">&quot;Label&quot;</span><span class="p">:</span><span class="s2">&quot;Opportunity General Handler&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">&quot;DeveloperName&quot;</span><span class="p">:</span><span class="s2">&quot;OpportunityGeneralHandler&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">&quot;ClassName__c&quot;</span><span class="p">:</span><span class="s2">&quot;OpportunityHandler&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">&quot;SObjectName__c&quot;</span><span class="p">:</span><span class="s2">&quot;Opportunity&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">&quot;OrderOfExecution__c&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nt">&quot;IsDisabled__c&quot;</span><span class="p">:</span><span class="kc">false</span><span class="w"></span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+This would call the <code>OpportunityHandler</code> class at runtime.</p>
+<h2 id="temporarily-disable-your-triggers-in-settings-and-code">Temporarily Disable Your Triggers in Settings and Code</h2>
+<h3 id="custom-setting">Custom Setting</h3>
+<p>The <code>TriggerSettings__c</code> custom settings gives you the option to disable all triggers for either the entire org, a single profile or a single user. As such, it functions as a complete killswitch, if you are for example riding on a Data Migration User Profile that is already delivering complete data to you. However, you can also selectively disable Objects and/or Trigger Handlers by inserting their names into the Text Area fields with the corresponding name. Should the space not fit, let me know! It's not intended to be used for the disablement of more than, say, two or three Classes at the same time, but there should be options to extend the functionality across multiple fields for you.</p>
+<h3 id="apex">Apex</h3>
+<p><code>disableClass(String className)</code> and <code>disableObject(SObjectType sobjType)</code> as well as their counterparts <code>enableClass()</code> and <code>enableObject()</code> can be used from within your Apex executions to disable Triggers from running in just the transaction that calls the method. Any other apex executions that do not come across this line of code will be unaffected. Use this if you are planning a big data update on an object that you do not need the automations of when running the update.</p>
+<h2 id="filter-your-records-before-the-handler-runs">Filter your Records before the Handler runs</h2>
+<p>Record Types often serve vastly different business uses, and standard trigger logic therefore often has to make the explicit distinction between <code>RecordTypeId A</code> and <code>RecordTypeId B</code> when checking if certain pieces of functionality should be executed. Instead you can already specify one or multiple Record Type Ids in the <code>Trigger Factory Setting</code>. The class variables <code>triggerNew</code> etc. will then have only the records with the matching record types. This saves you the trouble of checking them in every method you run across.</p>
+<p>Adjusting the above example, it could look like this:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nt">&quot;Label&quot;</span><span class="p">:</span><span class="s2">&quot;Existing Business Opportunity Handler&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">&quot;DeveloperName&quot;</span><span class="p">:</span><span class="s2">&quot;ExistingBusinessOppHandler&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">&quot;ClassName__c&quot;</span><span class="p">:</span><span class="s2">&quot;ExistingBusinessOppHandler&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">&quot;SObjectName__c&quot;</span><span class="p">:</span><span class="s2">&quot;Opportunity&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">&quot;OrderOfExecution__c&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">&quot;IsDisabled__c&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">&quot;RecordTypeIds__c&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;18-digit Salesforce Id&quot;</span><span class="w"></span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div></p>
+<p>This Opp Handler would run after <code>OpportunityHandler</code> because the <code>OrderOfExecution__c</code> is lower. It would also only contain records that have the correct Record Type Id.</p>
+<h2 id="store-database-operations-directly-in-your-handler">Store Database Operations directly in your Handler</h2>
+<p>Out of the box, this framework brings you four lists that you can leverage to collect database operations instead of calling DML all at once:</p>
+<ul>
+<li><code>lstUpdate</code></li>
+<li><code>lstInsert</code></li>
+<li><code>lstUpsert</code></li>
+<li><code>lstDelete</code></li>
+</ul>
+<p>You can use these out-of-the-box collections to perform DML in <code>andFinally()</code>. 
+<strong>Please note however that should the contents of these lists not be ordered by SObject Type, that each break in the Typing will cause another DML statement</strong>. If you want to bundle based on SObject Type, either sort the list beforehand or leverage another pattern such as the lovely <a href="https://trailhead.salesforce.com/de/content/learn/modules/apex_patterns_sl/apex_patterns_sl_learn_uow_principles">Unit of Work</a>.</p>
+<h2 id="control-recursion-wip">Control Recursion (WIP)</h2>
+<p>This trigger framework presents you with the option of setting a maximum LoopCount. This count will be increased everytime a Trigger is entering the BEFORE context. When the maximum Loop Count is exceeded, an exception is thrown.
+For example, use <code>this.setMaxLoopCount(1)</code> in the Trigger Constructor to make sure that the code breaks if the Trigger Handler runs more than once.</p>
+<p><strong>Work In Progress: Soon there will be an option to gracefully skip Triggers when the Loop Count is exceeded instead of throwing an Exception.</strong> </p>
+
+
+
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../installation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Installation" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Installation
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../use/" class="md-footer__link md-footer__link--next" aria-label="Next: How to use" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              How to use
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.9c69f0bc.min.js"></script>
+      
+    
+  </body>
+</html>
