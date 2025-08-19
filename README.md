@@ -2,7 +2,7 @@
 [![Code Coverage and Release](https://github.com/dschibster/sfdx-trigger-factory/actions/workflows/deployment.yml/badge.svg)](https://github.com/dschibster/sfdx-trigger-factory/actions/workflows/deployment.yml)
 
 
-# SFDX Trigger Factory - Used by mindsquare AG
+# SFDX Trigger Factory
 
 For more information about what the framework can and cannot do, head on over to the [documentation](https://dschibster.github.io/sfdx-trigger-factory)!
 # Installation
